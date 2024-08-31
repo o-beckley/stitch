@@ -1,12 +1,19 @@
 import 'dart:ui';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/config/router_config.dart';
+import 'package:stitch/firebase_options.dart';
+import 'package:stitch/network_services/auth_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/theme/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ScreenUtil.ensureScreenSize();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const StitchApp());
 }
 
@@ -15,9 +22,11 @@ class StitchApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return MultiProvider(
       providers: [
-        ListenableProvider<UIColors>(create: (context) => UIColors())
+        ListenableProvider<UIColors>(create: (context) => UIColors()),
+        ListenableProvider<AuthService>(create: (context) => AuthService())
       ],
       child: const Stitch(),
     );

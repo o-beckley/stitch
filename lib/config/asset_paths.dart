@@ -8,6 +8,7 @@ class AssetPaths {
   static const String bagIcon = 'assets/icons/bag.svg';
   static const String checkIcon = 'assets/icons/check.svg';
   static const String discountIcon = 'assets/icons/discount.svg';
+  static const String facebookIcon = 'assets/icons/facebook.svg';
   static const String filterIcon = 'assets/icons/filter.svg';
   static const String googleIcon = 'assets/icons/google.svg';
   static const String heartIcon = 'assets/icons/heart.svg';
