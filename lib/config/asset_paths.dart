@@ -2,7 +2,8 @@ class AssetPaths {
   AssetPaths._();
   // svg icons
   static const String addIcon = 'assets/icons/add.svg';
-  static const String appleIcon = 'assets/icons/apple.svg';
+  static const String appleDarkIcon = 'assets/icons/apple_dark.svg';
+  static const String appleLightIcon = 'assets/icons/apple_light.svg';
   static const String arrowBackIcon = 'assets/icons/arrow_back.svg';
   static const String arrowDownIcon = 'assets/icons/arrow_down.svg';
   static const String bagIcon = 'assets/icons/bag.svg';
