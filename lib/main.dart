@@ -46,6 +46,11 @@ class _StitchState extends State<Stitch> with WidgetsBindingObserver{
   void initState(){
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      final uiColors = context.read<UIColors>();
+      final brightness = PlatformDispatcher.instance.platformBrightness;
+      uiColors.darkMode.value = brightness == Brightness.dark;
+    });
   }
 
   @override
