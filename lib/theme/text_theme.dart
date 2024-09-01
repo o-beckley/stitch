@@ -67,7 +67,7 @@ TextTheme textTheme = const TextTheme(
 
   labelLarge: TextStyle(
       fontFamily: 'Gabarito',
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: FontWeight.w500
   ),
   labelMedium: TextStyle(
