@@ -6,6 +6,7 @@ import 'package:stitch/network_services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/theme/color_theme.dart';
+import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/sign_in_button.dart';
 import 'package:stitch/widgets/text_field.dart';
@@ -36,55 +37,64 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
-          child: ListView(
-            children: [
-              0.2.sw.verticalSpace,
-
-              Text(
-                'Sign in',
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.bold
-                ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
+        child: ListView(
+          children: [
+            const CustomAppBar(hasBackButton: false,),
+            Text(
+              'Sign in',
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold
               ),
-
-              0.1.sw.verticalSpace,
-
-              CustomTextField(
-                hintText: 'Email Address',
-                controller: emailController,
-              ),
-              0.05.sw.verticalSpace,
-              CustomWideButton(
-                label: 'Continue',
-                onTap: (){},
-              ),
-
-              0.15.sw.verticalSpace,
-
-              SignInButton(
-                label: 'Continue with Google',
-                iconPath: AssetPaths.googleIcon,
-                onTap: _googleSignIn,
-                disabled: isSigningIn,
-              ),
-              0.025.sw.verticalSpace,
-              SignInButton(
-                label: 'Continue with Apple',
-                iconPath: context.watch<UIColors>().darkMode.value
-                  ? AssetPaths.appleLightIcon : AssetPaths.appleDarkIcon,
-                disabled: true && isSigningIn,
-              ),
-              0.025.sw.verticalSpace,
-              SignInButton(
-                label: 'Continue with Facebook',
-                iconPath: AssetPaths.facebookIcon,
-                disabled: true && isSigningIn,
-              ),
-            ],
-          ),
+            ),
+            0.075.sw.verticalSpace,
+            CustomTextField(
+              hintText: 'Email Address',
+              controller: emailController,
+            ),
+            0.05.sw.verticalSpace,
+            CustomWideButton(
+              label: 'Continue',
+              onTap: (){
+                if(emailController.text.isNotEmpty){ // TODO "&& email is valid"
+                  context.push(RoutePaths.passwordScreen, extra: {'email': emailController.text});
+                }
+              },
+            ),
+            0.01.sw.verticalSpace,
+            Row(
+              children: [
+                const Text('Don\'t have an account?'),
+                CustomTextButton(
+                  label: 'Create one',
+                  onTap: (){
+                    context.push(RoutePaths.createAccountScreen);
+                  },
+                )
+              ],
+            ),
+            0.1.sw.verticalSpace,
+            SignInButton(
+              label: 'Continue with Google',
+              iconPath: AssetPaths.googleIcon,
+              onTap: _googleSignIn,
+              disabled: isSigningIn,
+            ),
+            0.025.sw.verticalSpace,
+            SignInButton(
+              label: 'Continue with Apple',
+              iconPath: context.watch<UIColors>().darkMode.value
+                ? AssetPaths.appleLightIcon : AssetPaths.appleDarkIcon,
+              disabled: true && isSigningIn,
+            ),
+            0.025.sw.verticalSpace,
+            SignInButton(
+              label: 'Continue with Facebook',
+              iconPath: AssetPaths.facebookIcon,
+              disabled: true && isSigningIn,
+            ),
+          ],
         ),
       ),
     );
