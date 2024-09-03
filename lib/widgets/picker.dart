@@ -58,6 +58,14 @@ class _PickerState extends State<Picker> {
                     children: [
                       Container(
                         constraints: BoxConstraints(
+                          /// This 0.9 comes from the fact that the main screens
+                          ///  where this is used has a 0.05 padding on both sides
+                          /// 1 - 2 * 0.05 = 0.9
+                          /// and the radius / 2 comes from the inner paddings
+                          /// above the consequence of this is that it centralizes
+                          /// the contents when there are only few items,
+                          /// say 2 or 3 😉
+                          /// ... no one is gonna read this tho 😐
                           minWidth: (0.9.sw / widget.items.length) - radius / 2
                         ),
                         decoration: BoxDecoration(
