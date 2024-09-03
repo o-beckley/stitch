@@ -8,10 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Picker extends StatefulWidget {
   final List<String> items;
   final Function(int)? onItemPicked;
+  final int startingIndex;
 
   const Picker({
     required this.items,
     this.onItemPicked,
+    this.startingIndex = 0,
     super.key
   });
 
@@ -20,7 +22,14 @@ class Picker extends StatefulWidget {
 }
 
 class _PickerState extends State<Picker> {
-  int selectedIndex = 0;
+  late int selectedIndex;
+
+  @override
+  void initState(){
+    super.initState();
+    selectedIndex = widget.startingIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     double radius = math.max(20, 50 / widget.items.length);
@@ -33,7 +42,10 @@ class _PickerState extends State<Picker> {
             widget.items.length,
             (index){
               return  Padding(
-                padding: EdgeInsets.symmetric(horizontal: radius / 2),
+                padding: EdgeInsets.only(
+                  left: index == 0 ? 0 : radius / 2,
+                  right: index == widget.items.length ? radius / 2 : 0
+                ),
                 child: GestureDetector(
                   onTap: (){
                     setState(() {
@@ -46,7 +58,7 @@ class _PickerState extends State<Picker> {
                     children: [
                       Container(
                         constraints: BoxConstraints(
-                          minWidth: (1.sw / widget.items.length) * 0.85
+                          minWidth: (0.9.sw / widget.items.length) - radius / 2
                         ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(radius),
