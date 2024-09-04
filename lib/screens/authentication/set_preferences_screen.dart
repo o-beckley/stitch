@@ -18,14 +18,14 @@ class SetPreferencesScreen extends StatefulWidget {
 class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
   int selectedGender = 0;
   final genders = ['Male', 'Female'];
-  int selectedAgeRange = 0;
+  int? selectedAgeRange;
   final  ageRanges = [
-    '3 - 5',
-    '5 - 12',
-    '12 - 18',
-    '18 - 40',
-    '40 - 65',
-    'Above 65'
+    '3 - 5 years',
+    '5 - 12 years',
+    '12 - 18 years',
+    '18 - 40 years',
+    '40 - 65 years',
+    'Above 65 years',
   ];
   @override
   Widget build(BuildContext context) {
