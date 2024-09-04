@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
+import 'package:stitch/widgets/drop_down_menu.dart';
 import 'package:stitch/widgets/picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/utils/router_utils.dart';
@@ -15,8 +16,17 @@ class SetPreferencesScreen extends StatefulWidget {
 }
 
 class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
-  final genders = ['Men', 'Women'];
-  int selectedIndex = 0;
+  int selectedGender = 0;
+  final genders = ['Male', 'Female'];
+  int selectedAgeRange = 0;
+  final  ageRanges = [
+    '3 - 5',
+    '5 - 12',
+    '12 - 18',
+    '18 - 40',
+    '40 - 65',
+    'Above 65'
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +53,9 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                   0.05.sw.verticalSpace,
                   Picker(
                     items: genders,
-                    startingIndex: selectedIndex,
+                    startingIndex: selectedGender,
                     onItemPicked: (index){
-                      selectedIndex = index;
+                      selectedGender = index;
                     },
                   ),
                   0.1.sw.verticalSpace,
@@ -54,6 +64,14 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   0.05.sw.verticalSpace,
+                  CustomDropDownMenu(
+                    isExpanded: true,
+                    label: 'Age range',
+                    items: ageRanges,
+                    onItemSelected: (index){
+                      selectedAgeRange = index;
+                    },
+                  )
                   // TODO: age picker
                 ],
               ),
