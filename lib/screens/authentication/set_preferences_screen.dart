@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/config/route_paths.dart';
+import 'package:stitch/models/constants.dart';
+import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/drop_down_menu.dart';
 import 'package:stitch/widgets/picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/utils/router_utils.dart';
+import 'package:provider/provider.dart';
 
 class SetPreferencesScreen extends StatefulWidget {
   const SetPreferencesScreen({super.key});
@@ -17,16 +20,9 @@ class SetPreferencesScreen extends StatefulWidget {
 
 class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
   int selectedGender = 0;
-  final genders = ['Male', 'Female'];
   int? selectedAgeRange;
-  final  ageRanges = [
-    '3 - 5 years',
-    '5 - 12 years',
-    '12 - 18 years',
-    '18 - 40 years',
-    '40 - 65 years',
-    'Above 65 years',
-  ];
+  bool isUploadingPreferences = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +48,7 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                   ),
                   0.05.sw.verticalSpace,
                   Picker(
-                    items: genders,
+                    items: Gender.values.map((g) => g.name).toList(),
                     startingIndex: selectedGender,
                     onItemPicked: (index){
                       selectedGender = index;
@@ -67,12 +63,11 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                   CustomDropDownMenu(
                     isExpanded: true,
                     label: 'Age range',
-                    items: ageRanges,
+                    items: AgeGroup.values.map((v) => v.name).toList(),
                     onItemSelected: (index){
                       selectedAgeRange = index;
                     },
                   )
-                  // TODO: age picker
                 ],
               ),
             ),
@@ -80,15 +75,25 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
               padding: EdgeInsets.symmetric(vertical: 0.05.sw),
               child: CustomWideButton(
                 label: 'Finish',
-                onTap: (){
-                  // TODO: upload preference then:
-                  GoRouter.of(context).clearStackAndNavigate(RoutePaths.home);
-                },
+                onTap: isUploadingPreferences ? null : _uploadPreference
               ),
             )
           ],
         ),
       ),
     );
+  }
+
+  void _uploadPreference() async {
+    setState(() {isUploadingPreferences = true;});
+    final isSuccessful = await context.read<UserManagementService>()
+      .updateProfile(
+      gender: Gender.values[selectedGender],
+      ageGroup: selectedAgeRange != null ? AgeGroup.values[selectedAgeRange!] : AgeGroup.youth,
+    );
+    if(isSuccessful && mounted){
+      GoRouter.of(context).clearStackAndNavigate(RoutePaths.home);
+    }
+    setState(() {isUploadingPreferences = false;});
   }
 }
