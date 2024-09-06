@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 1));
     if(mounted) {
       final auth = context.read<AuthService>();
-      if (auth.isSignedIm) {
+      if (auth.isSignedIn) {
         context.pushReplacement(RoutePaths.home);
       }
       else {
