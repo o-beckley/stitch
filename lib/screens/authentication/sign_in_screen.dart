@@ -20,6 +20,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   bool isSigningIn = false;
+  GlobalKey<FormState> formKey = GlobalKey();
   late TextEditingController emailController;
 
   @override
@@ -49,15 +50,27 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             0.075.sw.verticalSpace,
-            CustomTextField(
-              hintText: 'Email Address',
-              controller: emailController,
+            Form(
+              key: formKey,
+              child: CustomTextField(
+                hintText: 'Email Address',
+                controller: emailController,
+                validator: (value){
+                  //TODO: validate that the email exists in the database
+                  String pattern = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""";
+                  RegExp regex = RegExp(pattern);
+                  if (value == null || !regex.hasMatch(value)){
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
+              ),
             ),
             0.05.sw.verticalSpace,
             CustomWideButton(
               label: 'Continue',
               onTap: (){
-                if(emailController.text.isNotEmpty){ // TODO "&& email is valid"
+                if(formKey.currentState!.validate()){
                   context.push(RoutePaths.passwordScreen, extra: {'email': emailController.text});
                 }
               },
@@ -86,13 +99,13 @@ class _SignInScreenState extends State<SignInScreen> {
               label: 'Continue with Apple',
               iconPath: context.watch<UIColors>().darkMode.value
                 ? AssetPaths.appleLightIcon : AssetPaths.appleDarkIcon,
-              disabled: true && isSigningIn,
+              disabled: true,
             ),
             0.025.sw.verticalSpace,
-            SignInButton(
+            const SignInButton(
               label: 'Continue with Facebook',
               iconPath: AssetPaths.facebookIcon,
-              disabled: true && isSigningIn,
+              disabled: true,
             ),
           ],
         ),
