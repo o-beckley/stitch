@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/config/route_paths.dart';
+import 'package:stitch/network_services/auth_service.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/text_field.dart';
+import 'package:provider/provider.dart';
+import 'package:stitch/utils/router_utils.dart';
 
 class PasswordScreen extends StatefulWidget {
   final String email;
@@ -18,6 +21,9 @@ class PasswordScreen extends StatefulWidget {
 
 class _PasswordScreenState extends State<PasswordScreen> {
   TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey();
+  bool signingIn = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +39,23 @@ class _PasswordScreenState extends State<PasswordScreen> {
               ),
             ),
             0.075.sw.verticalSpace,
-            CustomTextField(
-              hintText: 'Password',
-              controller: passwordController,
+            Form(
+              key: formKey,
+              child: CustomTextField(
+                hintText: 'Password',
+                controller: passwordController,
+                validator: (value){
+                  if(value != null && value.isEmpty){
+                    return 'Password cannot be empty';
+                  }
+                  return null;
+                },
+              ),
             ),
             0.05.sw.verticalSpace,
             CustomWideButton(
               label: 'Continue',
-              onTap: (){
-
-              },
+              onTap: signingIn ? null : _signIn
             ),
             0.01.sw.verticalSpace,
             Row(
@@ -60,5 +73,16 @@ class _PasswordScreenState extends State<PasswordScreen> {
         ),
       ),
     );
+  }
+  void _signIn () async {
+    setState((){signingIn = true;});
+    if(formKey.currentState!.validate()){
+      final isSuccessful = await context.read<AuthService>()
+          .signIn(widget.email, passwordController.text);
+      if(isSuccessful && mounted){
+        GoRouter.of(context).clearStackAndNavigate(RoutePaths.home);
+      }
+    }
+    setState((){signingIn = false;});
   }
 }
