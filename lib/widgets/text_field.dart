@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TapRegionCallback? onTapOutside;
   final VoidCallback? onEditingComplete;
+  final FormFieldValidator<String>? validator;
   final bool obscureText;
 
   const CustomTextField({
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.onTapOutside,
     this.onEditingComplete,
     this.obscureText = false,
+    this.validator,
     super.key
   });
 
@@ -29,7 +31,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
             color: context.watch<UIColors>().surfaceContainer
           ),
-          child: TextField(
+          child: TextFormField(
             controller: controller,
             focusNode: focusNode,
             obscureText: obscureText,
@@ -47,6 +49,7 @@ class CustomTextField extends StatelessWidget {
             ),
             onEditingComplete: onEditingComplete,
             onTapOutside: onTapOutside ?? (_) => FocusScope.of(context).requestFocus(FocusNode()),
+            validator: validator,
           ),
         )
     );
