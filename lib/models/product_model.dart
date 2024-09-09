@@ -6,7 +6,7 @@ export 'package:stitch/models/constants.dart';
 class Product{
   final String id;
   final String name;
-  final int price;
+  final double price;
   final List<String> imageUrls;
   final Set<String> categories;
   final Set<AgeGroup> ageGroups;
