@@ -6,7 +6,7 @@ import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/drop_down_menu.dart';
-import 'package:stitch/widgets/picker.dart';
+import 'package:stitch/widgets/horizontal_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/utils/router_utils.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +47,7 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   0.05.sw.verticalSpace,
-                  Picker(
+                  HorizontalPicker(
                     items: Gender.values.map((g) => g.name).toList(),
                     startingIndex: selectedGender,
                     onItemPicked: (index){

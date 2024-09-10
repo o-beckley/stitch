@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Picker extends StatefulWidget {
+class HorizontalPicker extends StatefulWidget {
   final List<String> items;
   final Function(int)? onItemPicked;
   final int startingIndex;
 
-  const Picker({
+  const HorizontalPicker({
     required this.items,
     this.onItemPicked,
     this.startingIndex = 0,
@@ -18,10 +18,10 @@ class Picker extends StatefulWidget {
   });
 
   @override
-  State<Picker> createState() => _PickerState();
+  State<HorizontalPicker> createState() => _HorizontalPickerState();
 }
 
-class _PickerState extends State<Picker> {
+class _HorizontalPickerState extends State<HorizontalPicker> {
   late int selectedIndex;
 
   @override
