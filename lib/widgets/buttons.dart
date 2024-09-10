@@ -6,11 +6,15 @@ class CustomWideButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final Widget? trailing;
+  final Color? color;
+  final Color? backgroundColor;
 
   const CustomWideButton({
     required this.label,
     this.onTap,
     this.trailing,
+    this.color,
+    this.backgroundColor,
     super.key
   });
 
@@ -25,14 +29,14 @@ class CustomWideButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
-                color: context.watch<UIColors>().primary
+                color: backgroundColor ?? context.watch<UIColors>().primary
             ),
             child: trailing == null
             ? Center(
               child: Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: context.watch<UIColors>().onPrimaryContainer
+                  color: color ?? context.watch<UIColors>().onPrimaryContainer
                 ),
               ),
             )
@@ -44,7 +48,7 @@ class CustomWideButton extends StatelessWidget {
                   Text(
                     label,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: context.watch<UIColors>().onPrimaryContainer
+                      color: color ?? context.watch<UIColors>().onPrimaryContainer
                     ),
                   ),
                   trailing!
