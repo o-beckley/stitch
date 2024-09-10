@@ -82,7 +82,9 @@ class _VerticalPickerState extends State<VerticalPicker> {
                               selectedIndex = index;
                             });
                             widget.onItemPicked?.call(index);
-                            context.pop();
+                            if(context.canPop()){
+                              context.pop();
+                            }
                           },
                         ),
                       )
