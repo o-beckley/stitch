@@ -8,11 +8,11 @@ class Product{
   final String name;
   final double price;
   final List<String> imageUrls;
-  final Set<String> categories;
-  final Set<AgeGroup> ageGroups;
-  final Set<Gender> genders;
-  final Set<int> availableSizes;
-  final Set<ProductColor> availableColors;
+  final List<String> categories;
+  final List<AgeGroup> ageGroups;
+  final List<Gender> genders;
+  final List<String> availableSizes;
+  final List<ProductColor> availableColors;
   final int amountLeft;
   final List<ProductReview> reviews;
 
@@ -53,11 +53,11 @@ class Product{
       name: data['name'],
       price: data['price'],
       imageUrls: data['imageUrls'] as List<String>,
-      categories: data['categories'] as Set<String>,
-      ageGroups: (data['ageGroups'] as Set<String>).map(_getAgeGroup).toSet(),
-      genders: (data['genders'] as Set<String>).map(_getGender).toSet(),
-      availableSizes: data['availableSizes'] as Set<int>,
-      availableColors: (data['availableColors'] as Set<Map<String, dynamic>>).map(ProductColor.fromMap).toSet(),
+      categories: data['categories'] as List<String>,
+      ageGroups: (data['ageGroups'] as List<String>).map(_getAgeGroup).toList(),
+      genders: (data['genders'] as List<String>).map(_getGender).toList(),
+      availableSizes: data['availableSizes'] as List<String>,
+      availableColors: (data['availableColors'] as List<Map<String, dynamic>>).map(ProductColor.fromMap).toList(),
       amountLeft: data['amountLeft'],
       reviews: (data['reviews'] as List<Map<String, dynamic>>).map(ProductReview.fromMap).toList(),
     );
