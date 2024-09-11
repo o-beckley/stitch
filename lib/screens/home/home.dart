@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:stitch/config/asset_paths.dart';
-import 'package:stitch/network_services/auth_service.dart';
+import 'package:stitch/screens/home/home_screen.dart';
+import 'package:stitch/screens/home/notification_screen.dart';
+import 'package:stitch/screens/home/orders_screen.dart';
+import 'package:stitch/screens/home/profile_screen.dart';
 import 'package:stitch/widgets/bottom_navigation_bar.dart';
-import 'package:stitch/widgets/buttons.dart';
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,30 +15,37 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int selectedScreenIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: Center(
-              child: CustomFilledButton(
-                label: 'Sign out',
-                onTap: (){
-                  context.read<AuthService>().signOut();
-                },
-              ),
-            ),
+            child: IndexedStack(
+              index: selectedScreenIndex,
+              children: const [
+                HomeScreen(),
+                NotificationScreen(),
+                OrdersScreen(),
+                ProfileScreen()
+              ],
+            )
           ),
           CustomBottomNavigationBar(
-            iconPaths: [
+            iconPaths: const [
               AssetPaths.homeIcon,
               AssetPaths.notificationIcon,
               AssetPaths.ordersIcon,
               AssetPaths.profileIcon,
             ],
+            onTap: (index){
+              setState(() {
+                selectedScreenIndex = index;
+              });
+            },
           )
         ],
       ),
