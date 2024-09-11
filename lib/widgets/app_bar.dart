@@ -11,9 +11,12 @@ import 'package:go_router/go_router.dart';
 class CustomAppBar extends StatelessWidget {
   final bool hasBackButton;
   final String? title;
+  final List<Widget>? actions;
+
   const CustomAppBar({
     this.title,
     this.hasBackButton = true,
+    this.actions,
     super.key});
 
   @override
@@ -21,40 +24,53 @@ class CustomAppBar extends StatelessWidget {
     return SizedBox(
       height: math.max(80, 0.25.sw),
       // height: 100,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
         children: [
           hasBackButton
-          ? GestureDetector(
-            onTap: () => context.pop(),
-            child: SizedBox.square(
-              dimension: 40,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: context.watch<UIColors>().surfaceContainer
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: SvgPicture.asset(
-                    AssetPaths.arrowBackIcon,
-                    colorFilter: ColorFilter.mode(
-                      context.watch<UIColors>().onSurface,
-                      BlendMode.srcIn
-                    ),
+          ? Align(
+            alignment: Alignment.centerLeft,
+            child: GestureDetector(
+              onTap: () => context.pop(),
+              child: SizedBox.square(
+                dimension: 40,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: context.watch<UIColors>().surfaceContainer
                   ),
-                )
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: SvgPicture.asset(
+                      AssetPaths.arrowBackIcon,
+                      colorFilter: ColorFilter.mode(
+                        context.watch<UIColors>().onSurface,
+                        BlendMode.srcIn
+                      ),
+                    ),
+                  )
+                ),
               ),
             ),
           )
           : const SizedBox.shrink(),
           title != null
-          ? Text(
-              title!,
-              style: Theme.of(context).textTheme.titleMedium,
+          ? Align(
+            alignment: Alignment.center,
+            child: Text(
+                title!,
+                style: Theme.of(context).textTheme.titleMedium,
+            ),
           )
           : const SizedBox.shrink(),
-          hasBackButton ? 40.horizontalSpace : const SizedBox.shrink() // To balance the leading icon
+          actions != null
+          ? Align(
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: actions!,
+            ),
+          )
+          : const SizedBox.shrink()
         ],
       ),
     );
