@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 
@@ -133,6 +134,42 @@ class CustomTextButton extends StatelessWidget {
                 fontWeight: FontWeight.bold
               )
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomSvgIconButton extends StatelessWidget {
+  final String svgIconPath;
+  final VoidCallback? onTap;
+  final Color? backgroundColor;
+  final Color? iconColor;
+  final double radius;
+
+  const CustomSvgIconButton({
+    required this.svgIconPath,
+    this.onTap,
+    this.backgroundColor,
+    this.iconColor,
+    this.radius = 40,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox.square(
+        dimension: radius,
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
+            borderRadius: BorderRadius.circular(radius / 2)
+          ),
+          child: Center(
+            child: SvgPicture.asset(svgIconPath),
           ),
         ),
       ),

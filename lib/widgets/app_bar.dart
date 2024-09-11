@@ -2,11 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stitch/config/asset_paths.dart';
-import 'package:provider/provider.dart';
-import 'package:stitch/theme/color_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stitch/widgets/buttons.dart';
 
 class CustomAppBar extends StatelessWidget {
   final bool hasBackButton;
@@ -23,36 +21,22 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: math.max(80, 0.25.sw),
-      // height: 100,
       child: Stack(
         children: [
           hasBackButton
           ? Align(
             alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: () => context.pop(),
-              child: SizedBox.square(
-                dimension: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: context.watch<UIColors>().surfaceContainer
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(
-                      AssetPaths.arrowBackIcon,
-                      colorFilter: ColorFilter.mode(
-                        context.watch<UIColors>().onSurface,
-                        BlendMode.srcIn
-                      ),
-                    ),
-                  )
-                ),
-              ),
-            ),
+            child: CustomSvgIconButton(
+              svgIconPath: AssetPaths.arrowBackIcon,
+              onTap: (){
+                if(context.canPop()){
+                  context.pop();
+                }
+              },
+            )
           )
           : const SizedBox.shrink(),
+
           title != null
           ? Align(
             alignment: Alignment.center,
@@ -62,6 +46,7 @@ class CustomAppBar extends StatelessWidget {
             ),
           )
           : const SizedBox.shrink(),
+
           actions != null
           ? Align(
             alignment: Alignment.centerRight,
