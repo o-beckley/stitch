@@ -169,7 +169,13 @@ class CustomSvgIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(radius / 2)
           ),
           child: Center(
-            child: SvgPicture.asset(svgIconPath),
+            child: SvgPicture.asset(
+              svgIconPath,
+              colorFilter: ColorFilter.mode(
+                iconColor ?? context.watch<UIColors>().onSurface,
+                BlendMode.srcIn
+              ),
+            ),
           ),
         ),
       ),
