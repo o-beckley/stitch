@@ -86,7 +86,9 @@ class CustomSliverAppBar extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(CustomSliverAppBar oldDelegate) {
-    return false;
+    return (oldDelegate.title != title
+        || oldDelegate.hasBackButton != hasBackButton
+        || oldDelegate.actions != actions);
   }
 
   @override
