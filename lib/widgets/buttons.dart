@@ -34,10 +34,14 @@ class CustomWideButton extends StatelessWidget {
             ),
             child: trailing == null
             ? Center(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: color ?? context.watch<UIColors>().onPrimaryContainer
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: color ?? context.watch<UIColors>().onPrimaryContainer
+                  ),
                 ),
               ),
             )
@@ -46,10 +50,16 @@ class CustomWideButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: color ?? context.watch<UIColors>().onPrimaryContainer
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Text(
+                        label,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: color ?? context.watch<UIColors>().onPrimaryContainer
+                        ),
+                      ),
                     ),
                   ),
                   trailing!
