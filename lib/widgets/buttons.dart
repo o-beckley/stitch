@@ -24,12 +24,12 @@ class CustomWideButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        height: 50,
+        height: 60,
         child: Opacity(
           opacity: onTap == null ? 0.32 : 1,
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(60),
                 color: backgroundColor ?? context.watch<UIColors>().primary
             ),
             child: trailing == null
