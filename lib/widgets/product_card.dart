@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/config/asset_paths.dart';
+import 'package:go_router/go_router.dart';
+import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/product_model.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/placeholders.dart';
@@ -21,11 +23,11 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  bool isFavourite = false;
+  bool inFavourites = false;
   @override
   void initState() {
     super.initState();
-    /// TODO: get is favourite from the backend.
+    /// TODO: get inFavourite from the backend.
     /// if widget.product.id is in user.favourites
   }
 
@@ -33,7 +35,7 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        // TODO: navigate to product screen with a hero animation
+        context.push(RoutePaths.productScreen, extra: {'product': widget.product});
       },
       child: SizedBox(
         width: 0.4.sw,
@@ -41,71 +43,74 @@ class _ProductCardState extends State<ProductCard> {
           aspectRatio: 4/7,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  color: context.watch<UIColors>().surfaceContainer,
-                  borderRadius: BorderRadius.circular(constraints.minWidth / 15),
-                ),
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: CachedNetworkImage(
-                            imageUrl: widget.product.imageUrls[0],
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, _){
-                              return const ImagePlaceholder();
-                            },
+              return Hero(
+                tag: widget.product.id + widget.product.imageUrls[0],
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: context.watch<UIColors>().surfaceContainer,
+                    borderRadius: BorderRadius.circular(constraints.minWidth / 15),
+                  ),
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: CachedNetworkImage(
+                              imageUrl: widget.product.imageUrls[0],
+                              fit: BoxFit.cover,
+                              errorWidget: (context, url, _){
+                                return const ImagePlaceholder();
+                              },
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(constraints.minWidth / 15),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.product.name,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              5.verticalSpace,
-                              Text( // TODO: add discounted price if any with a slash on the old price
-                                '\$${widget.product.price.toString()}', // TODO: use the currency of the user
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.bold
+                          Padding(
+                            padding: EdgeInsets.all(constraints.minWidth / 15),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.product.name,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                overflow: TextOverflow.ellipsis,
+                                5.verticalSpace,
+                                Text( // TODO: add discounted price if any with a slash on the old price
+                                  '\$${widget.product.price.toString()}', // TODO: use the currency of the user
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              inFavourites = !inFavourites;
+                            });
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(constraints.minWidth / 15),
+                            child: SizedBox.square(
+                              dimension: constraints.minWidth / 8,
+                              child: SvgPicture.asset(
+                                inFavourites ? AssetPaths.heartFilledIcon : AssetPaths.heartIcon
                               )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            isFavourite = !isFavourite;
-                          });
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(constraints.minWidth / 15),
-                          child: SizedBox.square(
-                            dimension: constraints.minWidth / 8,
-                            child: SvgPicture.asset(
-                              isFavourite ? AssetPaths.heartFilledIcon : AssetPaths.heartIcon
-                            )
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               );
             }
