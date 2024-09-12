@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
-  final String? label;
+  final String label;
   final List<String> items;
   final Function(int)? onItemSelected;
   final bool isExpanded;
 
   const CustomDropDownMenu({
-    this.label,
+    required this.label,
     required this.items,
     this.onItemSelected,
     this.isExpanded = false,
@@ -28,13 +28,8 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   @override
   void initState(){
     super.initState();
-    selectedIndex = widget.label != null ? -1 : 0;
-    if(widget.label != null){
-      items = [widget.label!, ...widget.items];
-    }
-    else{
-      items = widget.items;
-    }
+    selectedIndex =  -1;
+    items = [widget.label, ...widget.items];
   }
 
   @override
@@ -64,14 +59,14 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               items.length,
               (index){
                 return DropdownMenuItem(
-                  enabled: !(widget.label != null && index == 0),
-                  value: widget.label != null ? index - 1 : index,
+                  enabled: index != 0,
+                  value: index - 1,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                         items[index],
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: !(widget.label != null && index == 0)
+                        color: index != 0
                           ? context.watch<UIColors>().onSurface
                           : context.watch<UIColors>().outline
                       ),
