@@ -38,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.watch<UIColors>().surface,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
         child: ListView(

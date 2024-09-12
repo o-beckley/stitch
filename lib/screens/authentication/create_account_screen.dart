@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/network_services/auth_service.dart';
 import 'package:stitch/network_services/user_management_service.dart';
+import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/utils/router_utils.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,7 +34,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+        backgroundColor: context.watch<UIColors>().surface,
+        body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
         child: Form(
           key: formKey,

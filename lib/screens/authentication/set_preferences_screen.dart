@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/constants.dart';
 import 'package:stitch/network_services/user_management_service.dart';
+import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/drop_down_menu.dart';
@@ -26,6 +27,7 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.watch<UIColors>().surface,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
         child: Column(
