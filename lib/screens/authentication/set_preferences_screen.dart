@@ -5,8 +5,8 @@ import 'package:stitch/models/constants.dart';
 import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
+import 'package:stitch/widgets/bottom_sheet_selector.dart';
 import 'package:stitch/widgets/buttons.dart';
-import 'package:stitch/widgets/drop_down_menu.dart';
 import 'package:stitch/widgets/horizontal_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/utils/router_utils.dart';
@@ -62,12 +62,11 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   0.05.sw.verticalSpace,
-                  CustomDropDownMenu(
-                    isExpanded: true,
+                  BottomSheetSelector(
                     label: 'Age range',
                     items: AgeGroup.values.map((v) => v.name).toList(),
                     onItemSelected: (index){
-                      selectedAgeRange = index;
+                        selectedAgeRange = index;
                     },
                   )
                 ],
