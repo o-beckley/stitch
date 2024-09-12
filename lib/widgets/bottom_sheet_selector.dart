@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/config/asset_paths.dart';
@@ -10,11 +11,15 @@ class BottomSheetSelector extends StatefulWidget {
   final String label;
   final List<String> items;
   final Function(int)? onItemSelected;
+  final List<Widget>? trailingWidgets;
+  final bool displayTrailingOnButton;
 
   const BottomSheetSelector({
     required this.label,
     required this.items,
     this.onItemSelected,
+    this.trailingWidgets,
+    this.displayTrailingOnButton = false,
     super.key
   });
 
@@ -29,19 +34,34 @@ class _BottomSheetSelectorState extends State<BottomSheetSelector> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: CustomWideButton(
-        label: selectedIndex == null
-        ? widget.label
-        : widget.items[selectedIndex!],
+        label: widget.label,
         backgroundColor: context.watch<UIColors>().surfaceContainer,
-        color: selectedIndex == null
-        ? context.watch<UIColors>().outline
-        : context.watch<UIColors>().onSurface,
-        trailing: SvgPicture.asset(
-          AssetPaths.arrowDownIcon,
-          colorFilter: ColorFilter.mode(
-              context.watch<UIColors>().onSurface,
-              BlendMode.srcIn
-          ),
+        color: context.watch<UIColors>().outline,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if(selectedIndex != null)
+              Padding(
+                padding: EdgeInsets.only(right: 0.1.sw),
+                child: widget.displayTrailingOnButton && widget.trailingWidgets != null && widget.trailingWidgets!.isNotEmpty
+                ? widget.trailingWidgets![selectedIndex!]
+                : Text(
+                  widget.items[selectedIndex!],
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              )
+            else
+              const SizedBox.shrink(),
+            SvgPicture.asset(
+              AssetPaths.arrowDownIcon,
+              colorFilter: ColorFilter.mode(
+                  context.watch<UIColors>().onSurface,
+                  BlendMode.srcIn
+              ),
+            ),
+          ],
         ),
         onTap: (){
           showModalBottomSheet(
@@ -50,6 +70,8 @@ class _BottomSheetSelectorState extends State<BottomSheetSelector> {
               return VerticalPicker(
                 title: widget.label,
                 items: widget.items,
+                trailingWidgets: widget.trailingWidgets,
+                startingIndex: selectedIndex ?? 0,
                 onItemPicked: (index){
                   setState(() {
                     selectedIndex = index;
