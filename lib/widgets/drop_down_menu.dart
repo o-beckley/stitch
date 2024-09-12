@@ -53,7 +53,13 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             isExpanded: widget.isExpanded,
             isDense: true,
             underline: const SizedBox.shrink(),
-            icon: SvgPicture.asset(AssetPaths.arrowDownIcon),
+            icon: SvgPicture.asset(
+              AssetPaths.arrowDownIcon,
+              colorFilter: ColorFilter.mode(
+                context.watch<UIColors>().onSurface,
+                BlendMode.srcIn
+              ),
+            ),
             items: List.generate(
               items.length,
               (index){
