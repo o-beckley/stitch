@@ -76,7 +76,9 @@ class _VerticalPickerState extends State<VerticalPicker> {
                           backgroundColor: selectedIndex == index
                             ? context.watch<UIColors>().primary
                             : context.watch<UIColors>().surfaceContainer,
-                          trailing: (widget.trailingWidgets?[index] ?? const SizedBox.shrink()),
+                          trailing: widget.trailingWidgets != null && widget.trailingWidgets!.isNotEmpty
+                          ? widget.trailingWidgets![index]
+                          : const SizedBox.shrink(),
                           onTap: (){
                             setState(() {
                               selectedIndex = index;
