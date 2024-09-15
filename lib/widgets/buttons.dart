@@ -16,7 +16,7 @@ class CustomWideButton extends StatelessWidget {
     this.trailing,
     this.color,
     this.backgroundColor,
-    super.key
+    super.key,
   });
 
   @override
@@ -40,7 +40,7 @@ class CustomWideButton extends StatelessWidget {
                   label,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: color ?? context.watch<UIColors>().onPrimaryContainer
+                    color: color ?? context.watch<UIColors>().onPrimaryContainer,
                   ),
                 ),
               ),
@@ -57,7 +57,7 @@ class CustomWideButton extends StatelessWidget {
                         label,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: color ?? context.watch<UIColors>().onPrimaryContainer
+                          color: color ?? context.watch<UIColors>().onPrimaryContainer,
                         ),
                       ),
                     ),
@@ -89,28 +89,31 @@ class CustomFilledButton extends StatelessWidget {
       onTap: onTap,
       child: SizedBox(
         height: 50,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: context.watch<UIColors>().primary,
-                borderRadius: BorderRadius.circular(25)
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Text(
-                    label,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: context.watch<UIColors>().onPrimaryContainer
+        child: Opacity(
+          opacity: onTap == null ? 0.32 : 1,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: context.watch<UIColors>().primary,
+                  borderRadius: BorderRadius.circular(25)
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Text(
+                      label,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: context.watch<UIColors>().onPrimaryContainer
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -134,15 +137,18 @@ class CustomTextButton extends StatelessWidget {
       onTap: onTap,
       child: SizedBox(
         height: 40,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: color ?? Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold
-              )
+        child: Opacity(
+          opacity: onTap == null ? 0.32 : 1,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: color ?? Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold
+                )
+              ),
             ),
           ),
         ),
@@ -173,17 +179,20 @@ class CustomSvgIconButton extends StatelessWidget {
       onTap: onTap,
       child: SizedBox.square(
         dimension: radius,
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
-            borderRadius: BorderRadius.circular(radius / 2)
-          ),
-          child: Center(
-            child: SvgPicture.asset(
-              svgIconPath,
-              colorFilter: ColorFilter.mode(
-                iconColor ?? context.watch<UIColors>().onSurface,
-                BlendMode.srcIn
+        child: Opacity(
+          opacity: onTap == null ? 0.32 : 1,
+          child: Container(
+            decoration: BoxDecoration(
+              color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
+              borderRadius: BorderRadius.circular(radius / 2)
+            ),
+            child: Center(
+              child: SvgPicture.asset(
+                svgIconPath,
+                colorFilter: ColorFilter.mode(
+                  iconColor ?? context.watch<UIColors>().onSurface,
+                  BlendMode.srcIn
+                ),
               ),
             ),
           ),
