@@ -81,4 +81,18 @@ class UserManagementService extends ChangeNotifier{
       return false;
     }
   }
+
+  Future<StitchUser?> getUser(String id) async {
+    try{
+      if(isSignedIn){
+        final snapshot = await _userReference.doc(id).get();
+        log((snapshot.data()?.id).toString());
+        return snapshot.data();
+      }
+    }
+    catch(e){
+      log(e.toString());
+    }
+    return null;
+  }
 }
