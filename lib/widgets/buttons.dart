@@ -21,17 +21,16 @@ class CustomWideButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 60,
-        child: Opacity(
-          opacity: onTap == null ? 0.32 : 1,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(60),
-                color: backgroundColor ?? context.watch<UIColors>().primary
-            ),
+    return Material(
+      borderRadius: BorderRadius.circular(30),
+      color: backgroundColor ?? context.watch<UIColors>().primary,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(30),
+        child: SizedBox(
+          height: 60,
+          child: Opacity(
+            opacity: onTap == null ? 0.32 : 1,
             child: trailing == null
             ? Center(
               child: Padding(
@@ -65,7 +64,7 @@ class CustomWideButton extends StatelessWidget {
                   trailing!
                 ],
               ),
-            )
+            ),
           ),
         ),
       ),
@@ -85,21 +84,20 @@ class CustomFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 50,
-        child: Opacity(
-          opacity: onTap == null ? 0.32 : 1,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: context.watch<UIColors>().primary,
-                  borderRadius: BorderRadius.circular(25)
-                ),
-                child: Center(
+    return Material(
+      color: context.watch<UIColors>().primary,
+      borderRadius: BorderRadius.circular(25),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(25),
+        child: SizedBox(
+          height: 50,
+          child: Opacity(
+            opacity: onTap == null ? 0.32 : 1,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Text(
@@ -111,8 +109,8 @@ class CustomFilledButton extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -175,17 +173,16 @@ class CustomSvgIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox.square(
-        dimension: radius,
-        child: Opacity(
-          opacity: onTap == null ? 0.32 : 1,
-          child: Container(
-            decoration: BoxDecoration(
-              color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
-              borderRadius: BorderRadius.circular(radius / 2)
-            ),
+    return Material(
+      color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
+      borderRadius: BorderRadius.circular(radius / 2),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(radius / 2),
+        child: SizedBox.square(
+          dimension: radius,
+          child: Opacity(
+            opacity: onTap == null ? 0.32 : 1,
             child: Center(
               child: SvgPicture.asset(
                 svgIconPath,
