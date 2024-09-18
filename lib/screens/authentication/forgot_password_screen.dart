@@ -73,7 +73,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             0.05.sw.verticalSpace,
             CustomWideButton(
               label: 'Continue',
-              onTap: sendingResetMail ? null : _sendResetEmail
+              disabled: sendingResetMail,
+              onTap: _sendResetEmail
             ),
           ],
         ),

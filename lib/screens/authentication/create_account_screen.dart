@@ -109,7 +109,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               0.075.sw.verticalSpace,
               CustomWideButton(
                 label: 'Continue',
-                onTap: creatingAccount ? null : _createAccount
+                disabled: creatingAccount,
+                onTap: _createAccount
               )
             ]
           ),

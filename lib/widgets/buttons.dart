@@ -9,6 +9,7 @@ class CustomWideButton extends StatelessWidget {
   final Widget? trailing;
   final Color? color;
   final Color? backgroundColor;
+  final bool disabled;
 
   const CustomWideButton({
     required this.label,
@@ -16,21 +17,22 @@ class CustomWideButton extends StatelessWidget {
     this.trailing,
     this.color,
     this.backgroundColor,
+    this.disabled = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      borderRadius: BorderRadius.circular(30),
-      color: backgroundColor ?? context.watch<UIColors>().primary,
-      child: InkWell(
-        onTap: onTap,
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
         borderRadius: BorderRadius.circular(30),
-        child: SizedBox(
-          height: 60,
-          child: Opacity(
-            opacity: onTap == null ? 0.32 : 1,
+        color: backgroundColor ?? context.watch<UIColors>().primary,
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: BorderRadius.circular(30),
+          child: SizedBox(
+            height: 60,
             child: trailing == null
             ? Center(
               child: Padding(
@@ -75,25 +77,27 @@ class CustomWideButton extends StatelessWidget {
 class CustomFilledButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
+  final bool disabled;
 
   const CustomFilledButton({
     required this.label,
     this.onTap,
+    this.disabled = false,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: context.watch<UIColors>().primary,
-      borderRadius: BorderRadius.circular(25),
-      child: InkWell(
-        onTap: onTap,
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
+        color: context.watch<UIColors>().primary,
         borderRadius: BorderRadius.circular(25),
-        child: SizedBox(
-          height: 50,
-          child: Opacity(
-            opacity: onTap == null ? 0.32 : 1,
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: BorderRadius.circular(25),
+          child: SizedBox(
+            height: 50,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -122,21 +126,23 @@ class CustomTextButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final Color? color;
+  final bool disabled;
 
   const CustomTextButton({
     required this.label,
     this.onTap,
     this.color,
+    this.disabled = false,
     super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 40,
-        child: Opacity(
-          opacity: onTap == null ? 0.32 : 1,
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: GestureDetector(
+        onTap: disabled ? null : onTap,
+        child: SizedBox(
+          height: 40,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -161,6 +167,7 @@ class CustomSvgIconButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? iconColor;
   final double radius;
+  final bool disabled;
 
   const CustomSvgIconButton({
     required this.svgIconPath,
@@ -168,21 +175,22 @@ class CustomSvgIconButton extends StatelessWidget {
     this.backgroundColor,
     this.iconColor,
     this.radius = 40,
+    this.disabled = false,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
-      borderRadius: BorderRadius.circular(radius / 2),
-      child: InkWell(
-        onTap: onTap,
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
+        color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
         borderRadius: BorderRadius.circular(radius / 2),
-        child: SizedBox.square(
-          dimension: radius,
-          child: Opacity(
-            opacity: onTap == null ? 0.32 : 1,
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: BorderRadius.circular(radius / 2),
+          child: SizedBox.square(
+            dimension: radius,
             child: Center(
               child: SvgPicture.asset(
                 svgIconPath,

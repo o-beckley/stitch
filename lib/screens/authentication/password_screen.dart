@@ -33,7 +33,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
         padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
         child: ListView(
           children: [
-            const CustomAppBar(hasBackButton: false),
+            const CustomAppBar(),
             Text(
               'Sign in',
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
@@ -57,7 +57,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
             0.05.sw.verticalSpace,
             CustomWideButton(
               label: 'Continue',
-              onTap: signingIn ? null : _signIn
+              disabled: signingIn,
+              onTap: _signIn
             ),
             0.01.sw.verticalSpace,
             Row(

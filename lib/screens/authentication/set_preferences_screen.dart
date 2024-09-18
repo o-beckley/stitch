@@ -76,7 +76,8 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
               padding: EdgeInsets.symmetric(vertical: 0.05.sw),
               child: CustomWideButton(
                 label: 'Finish',
-                onTap: isUploadingPreferences ? null : _uploadPreference
+                disabled: isUploadingPreferences,
+                onTap: _uploadPreference
               ),
             )
           ],
