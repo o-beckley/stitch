@@ -6,6 +6,7 @@ export 'package:stitch/models/constants.dart';
 class Product{
   final String id;
   final String name;
+  final String seller;
   final String description;
   final double price;
   final List<String> imageUrls;
@@ -20,6 +21,7 @@ class Product{
   Product({
     required this.id,
     required this.name,
+    required this.seller,
     required this.description,
     required this.price,
     required this.imageUrls,
@@ -53,6 +55,7 @@ class Product{
     return Product(
       id: data['id'],
       name: data['name'],
+      seller: data['seller'],
       description: data['description'],
       price: data['price'],
       imageUrls: data['imageUrls'] as List<String>,
@@ -70,6 +73,7 @@ class Product{
     return {
       'id': id,
       'name': name,
+      'seller': seller,
       'description': description,
       'price': price,
       'imageUrls': imageUrls,

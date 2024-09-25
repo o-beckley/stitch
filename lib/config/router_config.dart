@@ -71,7 +71,7 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
           );
         }
         return CupertinoPage(
-          child: const ErrorBuilder(message: 'The product object was not passed while navigating to the password screen',),
+          child: const ErrorBuilder(message: 'The product object was not passed while navigating to the product screen',),
           key: state.pageKey
         );
       }

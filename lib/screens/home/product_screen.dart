@@ -10,6 +10,7 @@ import 'package:stitch/widgets/bottom_sheet_selector.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/placeholders.dart';
 import 'package:stitch/widgets/review_card.dart';
+import 'package:stitch/widgets/seller_card.dart';
 
 class ProductScreen extends StatefulWidget {
   final Product product;
@@ -134,13 +135,12 @@ class _ProductScreenState extends State<ProductScreen> {
                             svgIconPath: AssetPaths.addIcon,
                             iconColor: context.watch<UIColors>().onPrimaryContainer,
                             backgroundColor: context.watch<UIColors>().primary,
-                            onTap:widget.product.amountLeft >= quantity + 1
-                            ? (){
+                            disabled: widget.product.amountLeft < quantity + 1,
+                            onTap: (){
                               setState(() {
                                 quantity += 1;
                               });
-                            }
-                            : null,
+                            },
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -152,13 +152,12 @@ class _ProductScreenState extends State<ProductScreen> {
                             svgIconPath: AssetPaths.removeIcon,
                             iconColor: context.watch<UIColors>().onPrimaryContainer,
                             backgroundColor: context.watch<UIColors>().primary,
-                            onTap: quantity > 1
-                            ? (){
+                            disabled: quantity <= 1,
+                            onTap: (){
                               setState(() {
                                 quantity -= 1;
                               });
-                            }
-                            : null,
+                            },
                           )
                         ],
                       ),
@@ -170,13 +169,29 @@ class _ProductScreenState extends State<ProductScreen> {
                   SliverToBoxAdapter(
                     child: Text(
                       widget.product.description,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: context.watch<UIColors>().outline
                       ),
                     )
                   ),
                   SliverToBoxAdapter(
-                    child: 0.2.sw.verticalSpace,
+                    child: 0.15.sw.verticalSpace,
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Seller',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        10.verticalSpace,
+                        SellerCard(id: widget.product.seller),
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: 0.15.sw.verticalSpace,
                   ),
                   if(widget.product.reviews.isNotEmpty)
                     SliverToBoxAdapter(
