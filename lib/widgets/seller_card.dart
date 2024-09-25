@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/models/seller_model.dart';
@@ -61,7 +60,7 @@ class SellerCard extends StatelessWidget {
 }
 
 class _SellerCardLoading extends StatelessWidget {
-  const _SellerCardLoading({super.key});
+  const _SellerCardLoading();
 
   @override
   Widget build(BuildContext context) {
