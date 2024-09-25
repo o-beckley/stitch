@@ -11,6 +11,7 @@ class CircularImage extends StatelessWidget {
   const CircularImage({
     this.imageUrl,
     this.radius,
+    super.key,
   });
 
   @override
