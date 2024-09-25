@@ -6,6 +6,7 @@ import 'package:stitch/network_services/product_provider_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/buttons.dart';
+import 'package:stitch/widgets/circular_image.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
 class SellerCard extends StatelessWidget {
@@ -27,7 +28,7 @@ class SellerCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  _CircularImage(
+                  CircularImage(
                     imageUrl: snapshot.data!.imageUrl,
                     radius: 0.075.sw,
                   ),
@@ -64,37 +65,26 @@ class _SellerCardLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class _CircularImage extends StatelessWidget {
-  final String? imageUrl;
-  final double? radius;
-
-  const _CircularImage({
-    this.imageUrl,
-    this.radius,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: radius != null ? radius! * 2 : null,
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: context.watch<UIColors>().surfaceContainer,
-          borderRadius: radius != null ? BorderRadius.circular(radius!) : null,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            CircularImage(radius: 0.075.sw,),
+            10.horizontalSpace,
+            const TextPlaceHolder(height: 14, width: 100)
+          ],
         ),
-        child: imageUrl != null
-        ? CachedNetworkImage(
-            imageUrl: imageUrl!,
-            fit: BoxFit.cover,
-            errorWidget: (context, url, _) => ImagePlaceholder(radius: radius),
-          )
-        : ImagePlaceholder(radius: radius)
-      ),
+        0.02.sw.verticalSpace,
+        TextPlaceHolder(height: 12, width: 0.9.sw),
+        0.02.sw.verticalSpace,
+        TextPlaceHolder(height: 12, width: 0.8.sw),
+        0.02.sw.verticalSpace,
+        TextPlaceHolder(height: 12, width: 0.85.sw),
+        0.02.sw.verticalSpace,
+        TextPlaceHolder(height: 12, width: 0.5.sw),
+      ],
     );
   }
 }
