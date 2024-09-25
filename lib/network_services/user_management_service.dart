@@ -37,7 +37,7 @@ class UserManagementService extends ChangeNotifier{
       }
     }
     catch(e){
-      log(e.toString());
+      log("UserManagementService.hasProfile: ${e.toString()}");
       return false;
     }
   }
@@ -69,7 +69,7 @@ class UserManagementService extends ChangeNotifier{
           cart: cart,
         );
         await _userReference.doc(user!.uid).set(newProfile);
-        log('profile updated');
+        log('UserManagementService.updateProfile: profile updated');
         return true;
       }
       else{
@@ -77,7 +77,7 @@ class UserManagementService extends ChangeNotifier{
       }
     }
     catch(e){
-      log(e.toString());
+      log('UserManagementService.updateProfile: ${e.toString()}');
       return false;
     }
   }
@@ -86,12 +86,11 @@ class UserManagementService extends ChangeNotifier{
     try{
       if(isSignedIn){
         final snapshot = await _userReference.doc(id).get();
-        log((snapshot.data()?.id).toString());
         return snapshot.data();
       }
     }
     catch(e){
-      log(e.toString());
+      log("UserManagementService.getUser: ${e.toString()}");
     }
     return null;
   }
