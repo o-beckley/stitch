@@ -13,7 +13,7 @@ class AuthService extends ChangeNotifier{
     try{
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       if(credential.user != null){
-        log("AuthService.signIn: signed in");
+        log("signIn: signed in");
         return true;
       }
       else{
@@ -21,7 +21,7 @@ class AuthService extends ChangeNotifier{
       }
     }
     catch(e){
-      log("AuthService.signIn: ${e.toString()}");
+      log("signIn: ${e.toString()}");
       return false;
     }
   }
@@ -30,7 +30,7 @@ class AuthService extends ChangeNotifier{
     try{
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       if(credential.user != null){
-        log('AuthService.createAccount: account created');
+        log('createAccount: account created');
         FirebaseAuth.instance.currentUser!.sendEmailVerification();
         return true;
       }
@@ -39,7 +39,7 @@ class AuthService extends ChangeNotifier{
       }
     }
     catch(e){
-      log("AuthService.createAccount: ${e.toString()}");
+      log("createAccount: ${e.toString()}");
       return false;
     }
   }
@@ -54,16 +54,16 @@ class AuthService extends ChangeNotifier{
       );
       final userCredential = await FirebaseAuth.instance.signInWithCredential(authCredential);
       if (userCredential.user != null){
-        log('AuthService.signInWithGoogle: signed in');
+        log('signInWithGoogle: signed in');
         return true;
       }
       else {
-        log('AuthService.signInWithGoogle: something went wrong');
+        log('signInWithGoogle: something went wrong');
         return false;
       }
     }
     catch (e){
-      log("AuthService.signInWithGoogle: ${e.toString()}");
+      log("signInWithGoogle: ${e.toString()}");
       return false;
     }
   }
@@ -74,7 +74,7 @@ class AuthService extends ChangeNotifier{
       return googleSignInAccount != null;
     }
     catch (e){
-      log("AuthService.signInSilently: ${e.toString()}");
+      log("signInSilently: ${e.toString()}");
       return false;
     }
   }
@@ -85,7 +85,7 @@ class AuthService extends ChangeNotifier{
       return true;
     }
     catch(e){
-      log("AuthService.sendPasswordResetEmail: ${e.toString()}");
+      log("sendPasswordResetEmail: ${e.toString()}");
       return true;
     }
   }
@@ -93,11 +93,11 @@ class AuthService extends ChangeNotifier{
   Future<bool> signOut() async {
     try{
       await FirebaseAuth.instance.signOut();
-      log('AuthService.signOut: signed out');
+      log('signOut: signed out');
       return true;
     }
     catch(e){
-      log("AuthService.signOut: ${e.toString()}");
+      log("signOut: ${e.toString()}");
       return false;
     }
   }

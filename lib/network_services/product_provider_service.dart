@@ -34,7 +34,7 @@ class ProductProviderService extends ChangeNotifier{
       }
     }
     catch(e){
-      log("ProductProvider.getSeller: ${e.toString()}");
+      log("getSeller: ${e.toString()}");
     }
     return null;
   }

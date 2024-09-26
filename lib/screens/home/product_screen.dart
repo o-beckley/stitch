@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stitch/config/asset_paths.dart';
 import 'package:provider/provider.dart';
+import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/product_model.dart';
+import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
+import 'package:stitch/utils/toasts.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/bottom_sheet_selector.dart';
 import 'package:stitch/widgets/buttons.dart';
@@ -25,18 +29,20 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  bool inFavourites = false;
+  late bool inFavourites;
   int imageIndex = 0;
   int? selectedSizeIndex;
   int? selectedColorIndex;
   int quantity = 1;
+  bool isAddingItem = false;
 
   @override
   void initState(){
     super.initState();
-    /// TODO: get  inFavourite from the backend.
-    /// if widget.product.id is in user.favourites
+    inFavourites = context.read<UserManagementService>()
+        .inFavourites(widget.product.id);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +61,14 @@ class _ProductScreenState extends State<ProductScreen> {
                         CustomSvgIconButton(
                           svgIconPath: inFavourites ? AssetPaths.heartFilledIcon : AssetPaths.heartIcon,
                           iconColor: inFavourites ? Colors.red : null,
-                          onTap: (){
+                          onTap: () async {
+                            final userService = context.read<UserManagementService>();
+                            if(userService.inFavourites(widget.product.id)){
+                              userService.removeFromFavourites(widget.product.id);
+                            }
+                            else{
+                              userService.addToFavourites(widget.product.id);
+                            }
                             setState(() {
                               inFavourites = !inFavourites;
                             });
@@ -78,20 +91,26 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: 0.05.sw.verticalSpace,
                   ),
                   SliverToBoxAdapter(
-                    child: Text(
-                      widget.product.name,
-                      style: Theme.of(context).textTheme.titleLarge,
+                    child: Hero(
+                      tag: "product_name_${widget.product.id}",
+                      child: Text(
+                        widget.product.name,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: 0.02.sw.verticalSpace,
                   ),
                   SliverToBoxAdapter(
-                    child: Text(
-                      '\$${widget.product.price}', //TODO: handle the currency
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: context.watch<UIColors>().primary
-                      )
+                    child: Hero(
+                      tag: "product_price_${widget.product.id}",
+                      child: Text(
+                        '\$${widget.product.price}', //TODO: handle the currency
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: context.watch<UIColors>().primary
+                        )
+                      ),
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -242,15 +261,38 @@ class _ProductScreenState extends State<ProductScreen> {
                       color: context.watch<UIColors>().onPrimaryContainer
                   ),
                 ),
-                onTap: (){
-                  // TODO: add to cart
-                },
+                disabled: isAddingItem,
+                onTap: _addItemToCart
               ),
             )
           ],
         ),
       )
     );
+  }
+
+  void _addItemToCart() async {
+    setState(() {isAddingItem = true;});
+    if(selectedColorIndex != null && selectedSizeIndex != null) {
+      final bool itemAdded = await context.read<UserManagementService>().addToCart(
+          OrderItem(
+            productId: widget.product.id,
+            quantity: quantity,
+            size: widget.product.availableSizes[selectedSizeIndex!],
+            color: widget.product.availableColors[selectedColorIndex!]
+          )
+      );
+      if(itemAdded && mounted){
+        context.pop();
+      }
+      else if (mounted){
+        Toasts.showToast("Item couldn't be added. Try again later", context);
+      }
+    }
+    else{
+      Toasts.showToast("Please select a color and size", context);
+    }
+    setState(() {isAddingItem = false;});
   }
 
   Widget _buildTrailingColor(int index){
