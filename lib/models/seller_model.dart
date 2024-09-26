@@ -5,7 +5,7 @@ class StitchSeller{
   final String? imageUrl;
   final String? phoneNumber;
   final String? email;
-  final List<String>? products;
+  final List<String>? productIds;
 
   StitchSeller({
     required this.id,
@@ -14,7 +14,7 @@ class StitchSeller{
     this.imageUrl,
     this.phoneNumber,
     this.email,
-    this.products,
+    this.productIds,
   });
 
   static StitchSeller fromMap(Map<String, dynamic> data){
@@ -25,7 +25,7 @@ class StitchSeller{
         imageUrl: data['imageUrl'],
         phoneNumber: data['phoneNumber'],
         email: data['email'],
-        products: data['products']
+        productIds: data['productIds']
     );
   }
 
@@ -37,7 +37,7 @@ class StitchSeller{
       'imageUrl': imageUrl,
       'phoneNumber': phoneNumber,
       'email': email,
-      'products': products
+      'productIds': productIds
     };
   }
 
@@ -48,7 +48,7 @@ class StitchSeller{
     String? imageUrl,
     String? phoneNumber,
     String? email,
-    List<String>? products,
+    List<String>? productIds,
   }){
     return StitchSeller(
       id: id ?? this.id,
@@ -57,7 +57,7 @@ class StitchSeller{
       imageUrl: imageUrl ?? this.imageUrl,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       email: email ?? this.email,
-      products: products ?? this.products
+      productIds: productIds ?? this.productIds
     );
   }
 }

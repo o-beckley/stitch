@@ -1,11 +1,11 @@
 class ProductReview{
-  final String reviewer;
+  final String reviewerId;
   final int rating;
   final String review;
   final DateTime timeStamp;
 
   ProductReview({
-    required this.reviewer,
+    required this.reviewerId,
     required this.rating,
     required this.review,
     required this.timeStamp,
@@ -13,7 +13,7 @@ class ProductReview{
 
   static ProductReview fromMap(Map<String, dynamic> data){
     return ProductReview(
-      reviewer: data['reviewer'],
+      reviewerId: data['reviewerId'],
       rating: data['rating'],
       review: data['review'],
       timeStamp: DateTime.parse(data['timeStamp'])
@@ -22,7 +22,7 @@ class ProductReview{
 
   Map<String, dynamic> toMap(){
     return {
-      'reviewer': reviewer,
+      'reviewerId': reviewerId,
       'rating': rating,
       'review': review,
       'timeStamp': timeStamp.toIso8601String()

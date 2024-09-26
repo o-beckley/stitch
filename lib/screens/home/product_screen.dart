@@ -186,7 +186,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         10.verticalSpace,
-                        SellerCard(id: widget.product.seller),
+                        SellerCard(id: widget.product.sellerId),
                       ],
                     ),
                   ),

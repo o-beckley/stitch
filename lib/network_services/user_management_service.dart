@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/user_model.dart';
 
 class UserManagementService extends ChangeNotifier{
@@ -37,7 +38,7 @@ class UserManagementService extends ChangeNotifier{
       }
     }
     catch(e){
-      log("UserManagementService.hasProfile: ${e.toString()}");
+      log("hasProfile: ${e.toString()}");
       return false;
     }
   }
@@ -51,7 +52,7 @@ class UserManagementService extends ChangeNotifier{
     AgeGroup? ageGroup,
     String? address,
     List<String>? favourites,
-    List<String>? cart
+    List<OrderItem>? cart
   }) async {
     try{
       if(isSignedIn){
@@ -69,7 +70,7 @@ class UserManagementService extends ChangeNotifier{
           cart: cart,
         );
         await _userReference.doc(user!.uid).set(newProfile);
-        log('UserManagementService.updateProfile: profile updated');
+        log('updateProfile: profile updated');
         return true;
       }
       else{
@@ -77,7 +78,7 @@ class UserManagementService extends ChangeNotifier{
       }
     }
     catch(e){
-      log('UserManagementService.updateProfile: ${e.toString()}');
+      log('updateProfile: ${e.toString()}');
       return false;
     }
   }
@@ -90,8 +91,23 @@ class UserManagementService extends ChangeNotifier{
       }
     }
     catch(e){
-      log("UserManagementService.getUser: ${e.toString()}");
+      log("getUser: ${e.toString()}");
     }
     return null;
+  }
+
+  Future<bool> addToCart(OrderItem item) async {
+    try{
+      if(isSignedIn){
+        _userReference.doc(user!.uid).update({
+          "cart": FieldValue.arrayUnion([item.toMap()])
+        });
+      }
+      return false;
+    }
+    catch(e){
+      log("addToCart: ${e.toString()}");
+      return false;
+    }
   }
 }

@@ -6,11 +6,11 @@ export 'package:stitch/models/constants.dart';
 class Product{
   final String id;
   final String name;
-  final String seller;
+  final String sellerId;
   final String description;
   final double price;
   final List<String> imageUrls;
-  final List<String> categories;
+  final List<String> categoryIds;
   final List<AgeGroup> ageGroups;
   final List<Gender> genders;
   final List<String> availableSizes;
@@ -21,11 +21,11 @@ class Product{
   Product({
     required this.id,
     required this.name,
-    required this.seller,
+    required this.sellerId,
     required this.description,
     required this.price,
     required this.imageUrls,
-    required this.categories,
+    required this.categoryIds,
     required this.ageGroups,
     required this.genders,
     required this.availableSizes,
@@ -55,11 +55,11 @@ class Product{
     return Product(
       id: data['id'],
       name: data['name'],
-      seller: data['seller'],
+      sellerId: data['sellerId'],
       description: data['description'],
       price: data['price'],
       imageUrls: data['imageUrls'] as List<String>,
-      categories: data['categories'] as List<String>,
+      categoryIds: data['categoryIds'] as List<String>,
       ageGroups: (data['ageGroups'] as List<String>).map(_getAgeGroup).toList(),
       genders: (data['genders'] as List<String>).map(_getGender).toList(),
       availableSizes: data['availableSizes'] as List<String>,
@@ -73,11 +73,11 @@ class Product{
     return {
       'id': id,
       'name': name,
-      'seller': seller,
+      'sellerId': sellerId,
       'description': description,
       'price': price,
       'imageUrls': imageUrls,
-      'categories': categories,
+      'categoryIds': categoryIds,
       'ageGroups': ageGroups.map((g) => g.name).toSet(),
       'genders': genders.map((g) => g.name).toSet(),
       'availableSizes': availableSizes,

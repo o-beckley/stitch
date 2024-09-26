@@ -26,7 +26,7 @@ class ReviewCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FutureBuilder(
-              future: context.read<UserManagementService>().getUser(review.reviewer),
+              future: context.read<UserManagementService>().getUser(review.reviewerId),
               builder: (context, snapshot){
                 if(snapshot.data != null){
                   return Flexible(
