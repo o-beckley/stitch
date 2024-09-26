@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/network_services/auth_service.dart';
+import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -24,8 +25,16 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 1));
     if(mounted) {
       final auth = context.read<AuthService>();
+      final userService = context.read<UserManagementService>();
       if (auth.isSignedIn) {
-        context.pushReplacement(RoutePaths.home);
+        userService.fetchCurrentUser()
+        .then(
+          (_){
+            if(mounted){
+              context.pushReplacement(RoutePaths.home);
+            }
+          }
+        );
       }
       else {
         context.pushReplacement(RoutePaths.signInScreen);
