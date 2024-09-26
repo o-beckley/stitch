@@ -1,3 +1,4 @@
+import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/constants.dart';
 export 'package:stitch/models/constants.dart';
 
@@ -11,7 +12,7 @@ class StitchUser{
   final AgeGroup? ageGroup;
   final String? address;
   final List<String>? favourites;
-  final List<String>? cart;
+  final List<OrderItem>? cart;
 
   StitchUser({
     required this.id,
@@ -47,7 +48,7 @@ class StitchUser{
       ageGroup: _getAgeGroup(data['ageGroup']),
       address: data['address'],
       favourites: data['favourites'],
-      cart: data['cart']
+      cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList()
     );
   }
 
@@ -62,7 +63,7 @@ class StitchUser{
       'ageGroup': ageGroup?.name,
       'address': address,
       'favourites': favourites,
-      'cart': cart,
+      'cart': cart?.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -76,7 +77,7 @@ class StitchUser{
     AgeGroup? ageGroup,
     String? address,
     List<String>? favourites,
-    List<String>? cart,
+    List<OrderItem>? cart,
   }){
     return StitchUser(
       id: id ?? this.id,
