@@ -47,7 +47,7 @@ class StitchUser{
       gender: data['gender'] == 'female' ? Gender.female : Gender.male,
       ageGroup: _getAgeGroup(data['ageGroup']),
       address: data['address'],
-      favourites: data['favourites'],
+      favourites: (data['favourites'] as List).cast<String>(),
       cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList()
     );
   }

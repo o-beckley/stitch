@@ -65,7 +65,7 @@ class ReviewCard extends StatelessWidget {
         Text(
           review.review,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Theme.of(context).colorScheme.outline,
+            color: context.watch<UIColors>().outline,
           ),
         ),
         Text(

@@ -25,7 +25,7 @@ class StitchSeller{
         imageUrl: data['imageUrl'],
         phoneNumber: data['phoneNumber'],
         email: data['email'],
-        productIds: data['productIds']
+        productIds: (data['productIds'] as List?)?.cast<String>()
     );
   }
 
