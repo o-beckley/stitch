@@ -25,12 +25,12 @@ class CircularImage extends StatelessWidget {
             borderRadius: radius != null ? BorderRadius.circular(radius!) : null,
           ),
           child: imageUrl != null
-              ? CachedNetworkImage(
+          ? CachedNetworkImage(
             imageUrl: imageUrl!,
             fit: BoxFit.cover,
             errorWidget: (context, url, _) => ImagePlaceholder(radius: radius),
           )
-              : ImagePlaceholder(radius: radius)
+          : ImagePlaceholder(radius: radius)
       ),
     );
   }
