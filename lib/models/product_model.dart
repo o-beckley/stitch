@@ -62,10 +62,10 @@ class Product{
       categoryIds: (data['categoryIds'] as List).cast<String>(),
       ageGroups: (data['ageGroups'] as List).cast<String>().map(_getAgeGroup).toList(),
       genders: (data['genders'] as List).cast<String>().map(_getGender).toList(),
-      availableSizes: data['availableSizes'] as List<String>,
-      availableColors: (data['availableColors'] as List<Map<String, dynamic>>).map(ProductColor.fromMap).toList(),
+      availableSizes: (data['availableSizes'] as List).cast<String>(),
+      availableColors: (data['availableColors'] as List).cast<Map<String, dynamic>>().map(ProductColor.fromMap).toList(),
       amountLeft: data['amountLeft'],
-      reviews: (data['reviews'] as List<Map<String, dynamic>>).map(ProductReview.fromMap).toList(),
+      reviews: (data['reviews'] as List).cast<Map<String, dynamic>>().map(ProductReview.fromMap).toList(),
     );
   }
 

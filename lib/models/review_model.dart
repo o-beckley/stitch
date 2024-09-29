@@ -19,7 +19,7 @@ class ProductReview{
       rating: data['rating'],
       review: data['review'],
       timeStamp: DateTime.parse(data['timeStamp']),
-      imageUrls: data['imageUrls'],
+      imageUrls: (data['imageUrls'] as List).cast<String>(),
     );
   }
 
