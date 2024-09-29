@@ -10,6 +10,7 @@ import 'package:stitch/screens/authentication/reset_email_sent_screen.dart';
 import 'package:stitch/screens/authentication/set_preferences_screen.dart';
 import 'package:stitch/screens/authentication/sign_in_screen.dart';
 import 'package:stitch/screens/authentication/splash_screen.dart';
+import 'package:stitch/screens/home/cart_screen.dart';
 import 'package:stitch/screens/home/home.dart';
 import 'package:stitch/screens/home/product_screen.dart';
 
@@ -17,6 +18,13 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
   initialLocation: RoutePaths.splashScreen,
   errorBuilder: (context, state) => const ErrorBuilder(),
   routes: [
+    GoRoute(
+      path: RoutePaths.cartScreen,
+      pageBuilder: (context, state) => CupertinoPage(
+        child: const CartScreen(),
+        key: state.pageKey
+      )
+    ),
     GoRoute(
       path: RoutePaths.createAccountScreen,
       pageBuilder: (context, state) => CupertinoPage(
