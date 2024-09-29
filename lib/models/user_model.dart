@@ -1,3 +1,4 @@
+import 'package:stitch/models/address_model.dart';
 import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/constants.dart';
 export 'package:stitch/models/constants.dart';
@@ -10,7 +11,7 @@ class StitchUser{
   final String? email;
   final Gender? gender;
   final AgeGroup? ageGroup;
-  final String? address;
+  final Address? address;
   final List<String>? favourites;
   final List<OrderItem>? cart;
 
@@ -46,7 +47,7 @@ class StitchUser{
       email: data['email'],
       gender: data['gender'] == 'female' ? Gender.female : Gender.male,
       ageGroup: _getAgeGroup(data['ageGroup']),
-      address: data['address'],
+      address: data['address'] != null ? Address.fromMap(data['address']): null,
       favourites: (data['favourites'] as List).cast<String>(),
       cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList()
     );
@@ -61,7 +62,7 @@ class StitchUser{
       'email': email,
       'gender': gender?.name,
       'ageGroup': ageGroup?.name,
-      'address': address,
+      'address': address?.toMap(),
       'favourites': favourites,
       'cart': cart?.map((e) => e.toMap()).toList(),
     };
@@ -75,7 +76,7 @@ class StitchUser{
     String? email,
     Gender? gender,
     AgeGroup? ageGroup,
-    String? address,
+    Address? address,
     List<String>? favourites,
     List<OrderItem>? cart,
   }){
