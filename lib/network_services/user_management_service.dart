@@ -160,6 +160,22 @@ class UserManagementService extends ChangeNotifier{
     }
   }
 
+  Future<List<OrderItem>?> getCartItems() async {
+    try{
+      if(isSignedIn){
+        final snapshot = await _userReference.doc(user!.uid).get();
+        return snapshot.data()?.cart;
+      }
+      else {
+        return null;
+      }
+    }
+    catch (e) {
+      log("getCartItems: ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<bool> addToFavourites(String productId) async {
     try{
       if(isSignedIn){
