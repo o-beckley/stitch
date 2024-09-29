@@ -60,7 +60,9 @@ class _ProductCardState extends State<ProductCard>{
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 color: context.watch<UIColors>().surfaceContainer,
-                                borderRadius: BorderRadius.circular(constraints.minWidth / 15),
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(constraints.minWidth / 15),
+                                ),
                               ),
                               child: CachedNetworkImage(
                                 imageUrl: widget.product.imageUrls[0],
