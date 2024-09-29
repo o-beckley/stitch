@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +12,6 @@ import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/bottom_sheet_selector.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/custom_network_image.dart';
-import 'package:stitch/widgets/placeholders.dart';
 import 'package:stitch/widgets/review_card.dart';
 import 'package:stitch/widgets/seller_card.dart';
 

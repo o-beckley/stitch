@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +6,6 @@ import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/product_model.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/custom_network_image.dart';
-import 'package:stitch/widgets/placeholders.dart';
 
 class ProductCard extends StatefulWidget {
   final Product product;
@@ -22,15 +20,6 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard>{
-  // late bool inFavourites;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   inFavourites = context.read<UserManagementService>()
-  //       .inFavourites(widget.product.id);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
