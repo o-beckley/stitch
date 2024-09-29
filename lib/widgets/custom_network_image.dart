@@ -4,25 +4,35 @@ import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
-class CircularImage extends StatelessWidget {
+class CustomNetworkImage extends StatelessWidget {
   final String? imageUrl;
   final double? radius;
+  final double? width;
+  final double? height;
+  final BoxShape shape;
 
-  const CircularImage({
+  const CustomNetworkImage({
     this.imageUrl,
     this.radius,
+    this.height,
+    this.width,
+    this.shape = BoxShape.rectangle,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: radius != null ? radius! * 2 : null,
+    return SizedBox(
+      width: width ?? (radius != null && shape == BoxShape.circle ? radius! * 2 : null),
+      height: height ?? (radius != null && shape == BoxShape.circle ? radius! * 2 : null),
       child: Container(
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: context.watch<UIColors>().surfaceContainer,
-            borderRadius: radius != null ? BorderRadius.circular(radius!) : null,
+            borderRadius: radius != null && shape != BoxShape.circle
+              ? BorderRadius.circular(radius!)
+              : null,
+            shape: shape
           ),
           child: imageUrl != null
           ? CachedNetworkImage(
@@ -30,7 +40,12 @@ class CircularImage extends StatelessWidget {
             fit: BoxFit.cover,
             errorWidget: (context, url, _) => ImagePlaceholder(radius: radius),
           )
-          : ImagePlaceholder(radius: radius)
+          : ImagePlaceholder(
+            radius: radius,
+            shape: shape,
+            width: width,
+            height: height,
+          )
       ),
     );
   }

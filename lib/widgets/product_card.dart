@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/product_model.dart';
 import 'package:stitch/theme/color_theme.dart';
+import 'package:stitch/widgets/custom_network_image.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
 class ProductCard extends StatefulWidget {
@@ -64,12 +65,8 @@ class _ProductCardState extends State<ProductCard>{
                                   top: Radius.circular(constraints.minWidth / 15),
                                 ),
                               ),
-                              child: CachedNetworkImage(
+                              child: CustomNetworkImage(
                                 imageUrl: widget.product.imageUrls[0],
-                                fit: BoxFit.cover,
-                                errorWidget: (context, url, _){
-                                  return const ImagePlaceholder();
-                                },
                               ),
                             ),
                           ),

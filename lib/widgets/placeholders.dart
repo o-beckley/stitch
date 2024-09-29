@@ -5,27 +5,31 @@ import 'package:stitch/widgets/tonal_elevation.dart';
 
 
 class ImagePlaceholder extends StatelessWidget {
-  final double? width, height, radius;
+  final double? radius;
+  final double? width;
+  final double? height;
+  final BoxShape shape;
+
   const ImagePlaceholder({
-    this.width,
-    this.height,
     this.radius,
-    super.key});
+    this.width, this.height,
+    this.shape = BoxShape.rectangle,
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: height,
-        width: width,
-        child: Container(
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-              borderRadius: radius != null
-                  ? BorderRadius.circular(radius!)
-                  : null,
-              color: (context).watch<UIColors>().surfaceContainer.tonalElevation(Elevation.level2, context)
-          ),
+    return SizedBox(
+      width: width ?? (radius != null && shape == BoxShape.circle ? radius! * 2 : null),
+      height: height ?? (radius != null && shape == BoxShape.circle ? radius! * 2 : null),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          shape: shape,
+            borderRadius: radius != null && shape != BoxShape.circle
+                ? BorderRadius.circular(radius!)
+                : null,
+            color: (context).watch<UIColors>().surfaceContainer.tonalElevation(Elevation.level2, context)
         ),
       ),
     );

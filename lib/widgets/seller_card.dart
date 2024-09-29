@@ -5,7 +5,7 @@ import 'package:stitch/network_services/product_provider_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/buttons.dart';
-import 'package:stitch/widgets/circular_image.dart';
+import 'package:stitch/widgets/custom_network_image.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
 class SellerCard extends StatelessWidget {
@@ -27,9 +27,10 @@ class SellerCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircularImage(
+                  CustomNetworkImage(
                     imageUrl: snapshot.data!.imageUrl,
                     radius: 0.075.sw,
+                    shape: BoxShape.circle,
                   ),
                   10.horizontalSpace,
                   CustomTextButton(
@@ -70,7 +71,10 @@ class _SellerCardLoading extends StatelessWidget {
       children: [
         Row(
           children: [
-            CircularImage(radius: 0.075.sw,),
+            CustomNetworkImage(
+              shape: BoxShape.circle,
+              radius: 0.075.sw,
+            ),
             10.horizontalSpace,
             const TextPlaceHolder(height: 14, width: 100)
           ],

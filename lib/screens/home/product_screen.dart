@@ -12,6 +12,7 @@ import 'package:stitch/utils/toasts.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/bottom_sheet_selector.dart';
 import 'package:stitch/widgets/buttons.dart';
+import 'package:stitch/widgets/custom_network_image.dart';
 import 'package:stitch/widgets/placeholders.dart';
 import 'package:stitch/widgets/review_card.dart';
 import 'package:stitch/widgets/seller_card.dart';
@@ -231,7 +232,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ... List.generate(
                               widget.product.reviews.length,
                               (index) => Padding(
-                                padding: EdgeInsets.symmetric(vertical: 0.03.sw),
+                                padding: EdgeInsets.symmetric(vertical: 0.04.sw),
                                 child: ReviewCard(review: widget.product.reviews[index]),
                               )
                           ),
@@ -334,11 +335,7 @@ class _ProductScreenState extends State<ProductScreen> {
       padding: EdgeInsets.only(right: 0.02.sw),
       child: Hero(
         tag: widget.product.id + widget.product.imageUrls[index],
-        child: CachedNetworkImage(
-          fit: BoxFit.contain,
-          imageUrl: widget.product.imageUrls[index],
-          errorWidget: (context, url, _) => const ImagePlaceholder(),
-        ),
+        child: CustomNetworkImage(imageUrl: widget.product.imageUrls[index]),
       ),
     );
   }
