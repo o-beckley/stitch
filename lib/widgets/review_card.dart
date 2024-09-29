@@ -19,7 +19,7 @@ class ReviewCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) { //TODO: add the review images
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
