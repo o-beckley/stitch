@@ -252,7 +252,7 @@ class _ProductScreenState extends State<ProductScreen> {
             Padding(
               padding:  EdgeInsets.only(top: 0.02.sw),
               child: CustomWideButton(
-                label: '\$${widget.product.price}',
+                label: '\$${(widget.product.price * quantity).toStringAsFixed(2)}',
                 trailing:  Text(
                   'Add to cart',
                   overflow: TextOverflow.ellipsis,
