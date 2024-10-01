@@ -14,6 +14,7 @@ class StitchUser{
   final Address? address;
   final List<String>? favourites;
   final List<OrderItem>? cart;
+  final List<String>? orderIds;
 
   StitchUser({
     required this.id,
@@ -26,6 +27,7 @@ class StitchUser{
     this.address,
     this.favourites,
     this.cart,
+    this.orderIds,
   });
 
   static AgeGroup _getAgeGroup(name){
@@ -49,7 +51,8 @@ class StitchUser{
       ageGroup: _getAgeGroup(data['ageGroup']),
       address: data['address'] != null ? Address.fromMap(data['address']): null,
       favourites: (data['favourites'] as List?)?.cast<String>(),
-      cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList()
+      cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList(),
+      orderIds: (data['orderIds'] as List?)?.cast<String>(),
     );
   }
 
@@ -65,6 +68,7 @@ class StitchUser{
       'address': address?.toMap(),
       'favourites': favourites,
       'cart': cart?.map((e) => e.toMap()).toList(),
+      'orderIds': orderIds,
     };
   }
 
@@ -79,6 +83,7 @@ class StitchUser{
     Address? address,
     List<String>? favourites,
     List<OrderItem>? cart,
+    List<String>? orderIds,
   }){
     return StitchUser(
       id: id ?? this.id,
@@ -91,6 +96,7 @@ class StitchUser{
       address: address ?? this.address,
       favourites: favourites ?? this.favourites,
       cart: cart ?? this.cart,
+      orderIds: orderIds ?? this.orderIds,
     );
   }
 }
