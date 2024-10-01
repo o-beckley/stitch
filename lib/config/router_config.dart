@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/config/route_paths.dart';
+import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/product_model.dart';
 import 'package:stitch/screens/authentication/create_account_screen.dart';
 import 'package:stitch/screens/authentication/forgot_password_screen.dart';
@@ -11,7 +12,10 @@ import 'package:stitch/screens/authentication/set_preferences_screen.dart';
 import 'package:stitch/screens/authentication/sign_in_screen.dart';
 import 'package:stitch/screens/authentication/splash_screen.dart';
 import 'package:stitch/screens/home/cart_screen.dart';
+import 'package:stitch/screens/home/checkout_screen.dart';
 import 'package:stitch/screens/home/home.dart';
+import 'package:stitch/screens/home/order_details_screen.dart';
+import 'package:stitch/screens/home/order_success_screen.dart';
 import 'package:stitch/screens/home/product_screen.dart';
 
 final GoRouter routerConfig = GoRouter( // TODO: add routing animations
@@ -24,6 +28,22 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
         child: const CartScreen(),
         key: state.pageKey
       )
+    ),
+    GoRoute(
+        path: RoutePaths.checkoutScreen,
+        pageBuilder: (context, state){
+          final orderItems = state.extra as List<OrderItem>?;
+          if(orderItems != null){
+            return CupertinoPage(
+                child: CheckoutScreen(orderItems: orderItems),
+                key: state.pageKey
+            );
+          }
+          return CupertinoPage(
+              child: const ErrorBuilder(message: 'The List of order items was not passed while navigating to the checkout screen',),
+              key: state.pageKey
+          );
+        }
     ),
     GoRoute(
       path: RoutePaths.createAccountScreen,
@@ -47,6 +67,20 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
       path: RoutePaths.home,
       pageBuilder: (context, state) => CupertinoPage(
         child: const Home(),
+        key: state.pageKey
+      )
+    ),
+    GoRoute(
+      path: RoutePaths.orderDetailsScreen,
+      pageBuilder: (context, state) => CupertinoPage(
+        child: const OrderDetailsScreen(),
+        key: state.pageKey
+      )
+    ),
+    GoRoute(
+      path: RoutePaths.orderSuccessScreen,
+      pageBuilder: (context, state) => CupertinoPage(
+        child: const OrderSuccessScreen(),
         key: state.pageKey
       )
     ),
