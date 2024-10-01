@@ -276,6 +276,7 @@ class _ProductScreenState extends State<ProductScreen> {
       final bool itemAdded = await context.read<UserManagementService>().addToCart(
           OrderItem(
             productId: widget.product.id,
+            sellerId: widget.product.sellerId,
             quantity: quantity,
             size: widget.product.availableSizes[selectedSizeIndex!],
             color: widget.product.availableColors[selectedColorIndex!]
