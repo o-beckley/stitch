@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({super.key});
+  final Color? color;
+
+  const LoadingIndicator({
+    this.color,
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator(); //TODO: build a custom one
+    return CircularProgressIndicator(  //TODO: build a custom one
+      color: color,
+    );
   }
 }

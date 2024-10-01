@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/config/asset_paths.dart';
+import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
@@ -18,6 +19,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+
   @override
   Widget build(BuildContext context) { //TODO: group by sellers
     return Scaffold(
@@ -52,11 +54,17 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   Padding(
                     padding:  EdgeInsets.only(top: 0.02.sw),
-                    child: CustomWideButton(
+                    child: Hero(
+                      tag: "checkout_place_order_button",
+                      child: CustomWideButton(
                         label: 'Checkout',
-                        onTap: (){
-
+                        onTap: () async {
+                          context.push(
+                            RoutePaths.checkoutScreen,
+                            extra: snapshot.data!
+                          );
                         }
+                      ),
                     ),
                   )
                 ],
