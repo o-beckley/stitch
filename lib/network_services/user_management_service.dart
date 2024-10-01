@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stitch/models/address_model.dart';
+import 'package:stitch/models/delivery_details_model.dart';
 import 'package:stitch/models/order_item_model.dart';
+import 'package:stitch/models/order_model.dart';
 import 'package:stitch/models/user_model.dart';
 
 class UserManagementService extends ChangeNotifier{
@@ -28,6 +30,21 @@ class UserManagementService extends ChangeNotifier{
         var v = value.data()!;
         v.addAll({'id': value.id});
         return StitchUser.fromMap(v);
+      },
+      toFirestore: (value, options){
+        var v = value.toMap();
+        v.remove('id');
+        return v;
+      }
+  );
+
+  CollectionReference<StitchOrder> get _ordersReference => _firestore
+      .collection('orders')
+      .withConverter(
+      fromFirestore: (value, options){
+        var v = value.data()!;
+        v.addAll({'id': value.id});
+        return StitchOrder.fromMap(v);
       },
       toFirestore: (value, options){
         var v = value.toMap();
@@ -222,6 +239,66 @@ class UserManagementService extends ChangeNotifier{
     }
     catch (e){
       log("inFavourites: ${e.toString()}");
+      return false;
+    }
+  }
+
+  Future<List<StitchOrder>?> getOrders() async {
+    try{
+      final orderIds = currentUser?.orderIds;
+      if(orderIds != null && orderIds.isNotEmpty){
+        final snapshot = await _ordersReference
+            .where(FieldPath.documentId, whereIn: orderIds).get();
+        return snapshot.docs.map((e) => e.data()).toList();
+      }
+      else{
+        return null;
+      }
+    }
+    catch(e){
+      log("getOrders: ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<bool> checkout({
+    required List<OrderItem> orderItems,
+    required DeliveryDetails deliveryDetails,
+  }) async {
+    /// This function should be called after a payment has been made.
+    try{
+      if(isSignedIn && orderItems.isNotEmpty) {
+        List<String> sellers = [];
+        for (OrderItem item in orderItems){
+          if(!sellers.contains(item.sellerId)){
+            sellers.add(item.sellerId);
+          }
+        }
+        for (String sellerId in sellers){ // Grouping each order by seller.
+          final items = orderItems.where((i) => i.sellerId == sellerId).toList();
+          final order = StitchOrder(
+              sellerId: sellerId,
+              receiverId: user!.uid,
+              status: {OrderStatus.placed: DateTime.now()},
+              deliveryDetails: deliveryDetails,
+              items: items
+          );
+          final ref = await _ordersReference.add(order);
+          await _userReference.doc(user!.uid).update({
+            'orderIds': FieldValue.arrayUnion([ref.id]),
+            'cart': FieldValue.arrayRemove(items.map((e) => e.toMap()).toList())
+          });
+          log("checkout: ${items.length} items from $sellerId have been checked out");
+        }
+        fetchCurrentUser();
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    catch(e){
+      log("checkout: ${e.toString()}");
       return false;
     }
   }

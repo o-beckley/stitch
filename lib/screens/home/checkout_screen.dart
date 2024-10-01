@@ -6,8 +6,8 @@ import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/address_model.dart';
 import 'package:stitch/models/delivery_details_model.dart';
 import 'package:stitch/models/order_item_model.dart';
-import 'package:stitch/network_services/order_management_service.dart';
 import 'package:stitch/network_services/product_provider_service.dart';
+import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/utils/toasts.dart';
 import 'package:stitch/widgets/app_bar.dart';
@@ -50,13 +50,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
             Padding(
               padding:  EdgeInsets.only(top: 0.02.sw),
-              child: Hero(
-                tag: "checkout_place_order_button",
-                child: FutureBuilder(
-                  future: getTotal(),
-                  builder: (context, snapshot) {
-                    if(snapshot.data != null){
-                      return CustomWideButton(
+              child: FutureBuilder(
+                future: getTotal(),
+                builder: (context, snapshot) {
+                  if(snapshot.data != null){
+                    return Hero(
+                      tag: "checkout_place_order_button",
+                      child: CustomWideButton(
                         label: "Place order",
                           disabled: checkingOut,
                           trailing: Text(
@@ -69,7 +69,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           setState(() {
                             checkingOut = true;
                           });
-                          final bool successful = await context.read<OrderManagementService>().checkout(
+                          final bool successful = await context.read<UserManagementService>().checkout(
                             orderItems: widget.orderItems,
                             deliveryDetails: DeliveryDetails( // TODO
                               address: Address(
@@ -91,19 +91,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             Toasts.showToast("Something went wrong, please try again later.", context);
                           }
                         }
-                      );
-                    }
-                    else{
-                      return CustomWideButton(
-                        label: "Place order",
-                        disabled: true,
-                        trailing: LoadingIndicator(
-                          color: context.watch<UIColors>().onPrimaryContainer.withOpacity(0.5),
-                        ),
-                      );
-                    }
+                      ),
+                    );
                   }
-                ),
+                  else{
+                    return SizedBox.square(
+                      dimension: 0.05.sw,
+                      child: const LoadingIndicator(),
+                    );
+                  }
+                }
               ),
             )
           ],
