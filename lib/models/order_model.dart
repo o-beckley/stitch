@@ -4,7 +4,7 @@ import 'package:stitch/models/order_item_model.dart';
 enum OrderStatus {placed, confirmed, shipped, delivered, cancelled, returned}
 
 class StitchOrder{
-  final String id;
+  final String? id;
   final String sellerId;
   final String receiverId;
   final DeliveryDetails deliveryDetails;
@@ -12,7 +12,7 @@ class StitchOrder{
   final List<OrderItem> items;
 
   StitchOrder({
-    required this.id,
+    this.id,
     required this.sellerId,
     required this.receiverId,
     required this.deliveryDetails,
