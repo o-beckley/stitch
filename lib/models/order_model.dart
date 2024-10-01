@@ -32,6 +32,7 @@ class StitchOrder{
     };
   }
 
+
   static StitchOrder fromMap(Map<String, dynamic> data){
     return StitchOrder(
       id: data['id'],
@@ -52,5 +53,15 @@ class StitchOrder{
       'status': status.map((k, v) => MapEntry(k.name, v.toIso8601String())),
       'items': items.map((e) => e.toMap()).toList()
     };
+  }
+
+  OrderStatus get currentStatus{
+    OrderStatus current = OrderStatus.placed;
+    for (OrderStatus s in OrderStatus.values){
+      if(status.containsKey(s)){
+        current = s;
+      }
+    }
+    return current;
   }
 }
