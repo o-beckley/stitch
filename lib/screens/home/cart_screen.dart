@@ -27,7 +27,7 @@ class _CartScreenState extends State<CartScreen> {
         child: FutureBuilder(
           future: context.read<UserManagementService>().getCartItems(),
           builder: (context, snapshot) {
-            if(snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty){
+            if(snapshot.data != null && snapshot.data!.isNotEmpty){
               return Column(
                 children: [
                   Expanded(
@@ -62,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               );
             }
-            else if(snapshot.hasData){
+            else if(snapshot.connectionState == ConnectionState.done){
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
