@@ -44,11 +44,17 @@ class CustomAppBar extends StatelessWidget {
             title != null
             ? Align(
               alignment: Alignment.center,
-              child: Text(
-                  title!,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold
-                  ),
+              child: SizedBox(
+                width: 0.6.sw,
+                child: Text(
+                    title!,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold
+                    ),
+                ),
               ),
             )
             : const SizedBox.shrink(),
