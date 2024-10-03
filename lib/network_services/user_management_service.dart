@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -261,6 +261,26 @@ class UserManagementService extends ChangeNotifier{
     }
   }
 
+  Future<String?> get _createOrderId async {
+    try {
+      final int milliseconds = DateTime
+          .now()
+          .millisecondsSinceEpoch;
+      final random = math.Random();
+      final rand = random.nextInt(4096);
+      String id = "$milliseconds${rand.toString().padLeft(4, '0')}";
+      final ref = await _ordersReference.doc(id).get();
+      if (ref.exists) {
+        return _createOrderId;
+      }
+      return id;
+    }
+    catch(e){
+      log("_createOrderId: ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<bool> checkout({
     required List<OrderItem> orderItems,
     required DeliveryDetails deliveryDetails,
@@ -283,9 +303,13 @@ class UserManagementService extends ChangeNotifier{
               deliveryDetails: deliveryDetails,
               items: items
           );
-          final ref = await _ordersReference.add(order);
+          final String? id = await _createOrderId;
+          if(id == null){
+            return false;
+          }
+          await _ordersReference.doc(id).set(order);
           await _userReference.doc(user!.uid).update({
-            'orderIds': FieldValue.arrayUnion([ref.id]),
+            'orderIds': FieldValue.arrayUnion([id]),
             'cart': FieldValue.arrayRemove(items.map((e) => e.toMap()).toList())
           });
           log("checkout: ${items.length} items from $sellerId have been checked out");
