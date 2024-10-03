@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/order_item_model.dart';
+import 'package:stitch/models/order_model.dart';
 import 'package:stitch/models/product_model.dart';
 import 'package:stitch/screens/authentication/create_account_screen.dart';
 import 'package:stitch/screens/authentication/forgot_password_screen.dart';
@@ -72,10 +73,19 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
     ),
     GoRoute(
       path: RoutePaths.orderDetailsScreen,
-      pageBuilder: (context, state) => CupertinoPage(
-        child: const OrderDetailsScreen(),
-        key: state.pageKey
-      )
+      pageBuilder: (context, state){
+        final order = state.extra as StitchOrder?;
+        if(order != null){
+          return CupertinoPage(
+              child: OrderDetailsScreen(order: order),
+              key: state.pageKey
+          );
+        }
+        return CupertinoPage(
+            child: const ErrorBuilder(message: 'The order was not passed while navigating to the order details screen',),
+            key: state.pageKey
+        );
+      }
     ),
     GoRoute(
       path: RoutePaths.orderSuccessScreen,
