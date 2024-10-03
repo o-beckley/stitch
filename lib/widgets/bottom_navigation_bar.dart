@@ -25,10 +25,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: context.watch<UIColors>().surfaceContainer
+        color: context.watch<UIColors>().surface
       ),
       child: Padding(
-        padding: EdgeInsets.only(bottom: 0.02.sh, top: 0.01.sh),
+        padding: EdgeInsets.only(bottom: 0.01.sh, top: 0.01.sh),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
