@@ -88,32 +88,34 @@ class CustomFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: disabled ? 0.32 : 1,
-      child: Material(
-        color: context.watch<UIColors>().primary,
-        borderRadius: BorderRadius.circular(25),
-        child: InkWell(
-          onTap: disabled ? null : onTap,
+    return Center(
+      child: Opacity(
+        opacity: disabled ? 0.32 : 1,
+        child: Material(
+          color: context.watch<UIColors>().primary,
           borderRadius: BorderRadius.circular(25),
-          child: SizedBox(
-            height: 50,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Text(
-                      label,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: context.watch<UIColors>().onPrimaryContainer
+          child: InkWell(
+            onTap: disabled ? null : onTap,
+            borderRadius: BorderRadius.circular(25),
+            child: SizedBox(
+              height: 50,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        label,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: context.watch<UIColors>().onPrimaryContainer
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -181,22 +183,24 @@ class CustomSvgIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: disabled ? 0.32 : 1,
-      child: Material(
-        color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
-        borderRadius: BorderRadius.circular(radius / 2),
-        child: InkWell(
-          onTap: disabled ? null : onTap,
+    return Center(
+      child: Opacity(
+        opacity: disabled ? 0.32 : 1,
+        child: Material(
+          color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
           borderRadius: BorderRadius.circular(radius / 2),
-          child: SizedBox.square(
-            dimension: radius,
-            child: Center(
-              child: SvgPicture.asset(
-                svgIconPath,
-                colorFilter: ColorFilter.mode(
-                  iconColor ?? context.watch<UIColors>().onSurface,
-                  BlendMode.srcIn
+          child: InkWell(
+            onTap: disabled ? null : onTap,
+            borderRadius: BorderRadius.circular(radius / 2),
+            child: SizedBox.square(
+              dimension: radius,
+              child: Center(
+                child: SvgPicture.asset(
+                  svgIconPath,
+                  colorFilter: ColorFilter.mode(
+                    iconColor ?? context.watch<UIColors>().onSurface,
+                    BlendMode.srcIn
+                  ),
                 ),
               ),
             ),

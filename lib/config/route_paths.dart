@@ -1,6 +1,6 @@
 class RoutePaths {
   RoutePaths._();
-  static const String addAddressScreen = '/add_address_screen';
+  static const String addressScreen = '/address_screen';
   static const String cartScreen = '/cart_screen';
   static const String checkoutScreen = '/checkout_screen';
   static const String createAccountScreen = '/create_account_screen';
