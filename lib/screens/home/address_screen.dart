@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:stitch/config/asset_paths.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 
