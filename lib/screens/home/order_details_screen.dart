@@ -10,6 +10,7 @@ import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/cart_item_card.dart';
+import 'package:stitch/widgets/custom_tile.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final StitchOrder order;
@@ -24,23 +25,15 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-  final GlobalKey<AnimatedListState> _itemListKey = GlobalKey();
   bool _shouldShowOrderItems = false;
   List<OrderItem> orderItems =  [];
   int length = 1;
 
   void _showItems(){
     orderItems = widget.order.items;
-    _itemListKey.currentState?.insertAllItems(0, widget.order.items.length);
   }
   void _removeItems(){
     orderItems = [];
-    _itemListKey.currentState?.removeAllItems(
-      (context, animation){
-        return const OrderItemLoading();
-      },
-      duration: const Duration(seconds: 1)
-    );
   }
 
   @override
@@ -58,25 +51,25 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
                 child: _DisplayOrderState(status: 'Delivered', timestamp: widget.order.status[OrderStatus.delivered]),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
                 child: _DisplayOrderState(status: 'In transit', timestamp: widget.order.status[OrderStatus.shipped]),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
                 child: _DisplayOrderState(status: 'Order confirmed', timestamp: widget.order.status[OrderStatus.confirmed]),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
                 child: _DisplayOrderState(status: 'Order placed', timestamp: widget.order.status[OrderStatus.placed]),
               ),
             ),
@@ -96,68 +89,60 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               child: 0.025.sw.verticalSpace,
             ),
             SliverToBoxAdapter(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: context.watch<UIColors>().surfaceContainer,
-                  borderRadius: BorderRadius.circular(0.025.sw)
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(0.05.sw),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        AssetPaths.ordersIcon,
-                        colorFilter: ColorFilter.mode(
-                            context.watch<UIColors>().onSurface,
-                            BlendMode.srcIn
-                        ),
-                      ),
-                      0.05.sw.horizontalSpace,
-                      Text(
-                        "${widget.order.items.length} ${widget.order.items.length > 1 ? 'items' : 'item'}",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontSize: 20
-                            // color: context.watch<UIColors>().outline
-                        ),
-                      ),
-                      const Expanded(child: SizedBox()),
-                      CustomTextButton(
-                        label: _shouldShowOrderItems ? "Collapse all" : "View all",
-                        color: context.watch<UIColors>().primary,
-                        onTap: (){
-                          setState(() {
-                            _shouldShowOrderItems = !_shouldShowOrderItems;
-                          });
-                          if(_shouldShowOrderItems){
-                            _showItems();
-                          }
-                          else {
-                            _removeItems();
-                          }
-                        },
-                      )
-                    ],
+              child: CustomTile(
+                title: "${widget.order.items.length} ${widget.order.items.length > 1 ? 'items' : 'item'}",
+                leading: SvgPicture.asset(
+                  AssetPaths.ordersIcon,
+                  colorFilter: ColorFilter.mode(
+                      context.watch<UIColors>().onSurface,
+                      BlendMode.srcIn
                   ),
+                ),
+                trailing: CustomTextButton(
+                  label: _shouldShowOrderItems ? "Collapse" : "View all",
+                  color: context.watch<UIColors>().primary,
+                  onTap: (){
+                    setState(() {
+                      _shouldShowOrderItems = !_shouldShowOrderItems;
+                    });
+                    if(_shouldShowOrderItems){
+                      _showItems();
+                    }
+                    else {
+                      _removeItems();
+                    }
+                  },
                 ),
               ),
             ),
-            SliverAnimatedList(
-              key: _itemListKey,
-              initialItemCount: orderItems.length,
-              itemBuilder: (context, index, animation){
+            SliverList.builder(
+              itemCount: orderItems.length,
+              itemBuilder: (context, index){
                 return Padding(
                   padding: EdgeInsets.only(top: 0.05.sw),
-                  child: SlideTransition(
-                    position: animation.drive(
-                      Tween<Offset>(
-                        begin: const Offset(1, 0),
-                        end: Offset.zero
-                      )
-                    ),
-                    child: CartItemCard(item: orderItems[index])
-                  ),
+                  child: CartItemCard(item: orderItems[index]),
                 );
               },
+            ),
+            SliverToBoxAdapter(
+              child: 0.1.sw.verticalSpace,
+            ),
+            SliverToBoxAdapter(
+                child: Text(
+                  "Shipping details",
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                  ),
+                )
+            ),
+            SliverToBoxAdapter(
+              child: 0.025.sw.verticalSpace,
+            ),
+            SliverToBoxAdapter(
+              child: CustomTile(
+                title: "Shipping details", //TODO
+              ),
             ),
           ],
         ),

@@ -24,13 +24,12 @@ class CustomTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.watch<UIColors>().surfaceContainer,
-          borderRadius: BorderRadius.circular(0.02.sw)
-        ),
+    return Material(
+      color: context.watch<UIColors>().surfaceContainer,
+      borderRadius: BorderRadius.circular(0.02.sw),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(0.02.sw),
         child: Padding(
           padding: EdgeInsets.all(0.05.sw),
           child: Row(
