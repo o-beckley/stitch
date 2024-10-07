@@ -7,19 +7,19 @@ import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/custom_network_image.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
-class OrderItemCard extends StatefulWidget {
+class CartItemCard extends StatefulWidget {
   final OrderItem item;
 
-  const OrderItemCard({
+  const CartItemCard({
     required this.item,
     super.key
   });
 
   @override
-  State<OrderItemCard> createState() => _OrderItemCardState();
+  State<CartItemCard> createState() => _CartItemCardState();
 }
 
-class _OrderItemCardState extends State<OrderItemCard> {
+class _CartItemCardState extends State<CartItemCard> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

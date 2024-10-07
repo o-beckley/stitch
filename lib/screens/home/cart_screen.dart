@@ -10,7 +10,7 @@ import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
-import 'package:stitch/widgets/order_item_card.dart';
+import 'package:stitch/widgets/cart_item_card.dart';
 import 'package:stitch/widgets/loading_indicator.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
@@ -58,7 +58,7 @@ class _CartScreenState extends State<CartScreen> {
                           itemBuilder: (context, index){
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 0.02.sw),
-                              child: OrderItemCard(item: snapshot.data![index]),
+                              child: CartItemCard(item: snapshot.data![index]),
                             );
                           },
                         )

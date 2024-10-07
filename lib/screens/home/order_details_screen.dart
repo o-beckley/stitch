@@ -9,7 +9,7 @@ import 'package:stitch/models/order_model.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
-import 'package:stitch/widgets/order_item_card.dart';
+import 'package:stitch/widgets/cart_item_card.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final StitchOrder order;
@@ -24,7 +24,7 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-  final GlobalKey<AnimatedListState> _itemListKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> _itemListKey = GlobalKey();
   bool _shouldShowOrderItems = false;
   List<OrderItem> orderItems =  [];
   int length = 1;
@@ -58,30 +58,30 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
-                child: _DisplayOrderState(status: 'Order placed', timestamp: widget.order.status[OrderStatus.placed]),
+                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                child: _DisplayOrderState(status: 'Delivered', timestamp: widget.order.status[OrderStatus.delivered]),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
+                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                child: _DisplayOrderState(status: 'In transit', timestamp: widget.order.status[OrderStatus.shipped]),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
                 child: _DisplayOrderState(status: 'Order confirmed', timestamp: widget.order.status[OrderStatus.confirmed]),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
-                child: _DisplayOrderState(status: 'Shipped', timestamp: widget.order.status[OrderStatus.shipped]),
+                padding: EdgeInsets.symmetric(vertical: 0.05.sw),
+                child: _DisplayOrderState(status: 'Order placed', timestamp: widget.order.status[OrderStatus.placed]),
               ),
             ),
             SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.025.sw),
-                child: _DisplayOrderState(status: 'Delivered', timestamp: widget.order.status[OrderStatus.delivered]),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: 0.4.sw.verticalSpace,
+              child: 0.1.sw.verticalSpace,
             ),
             SliverToBoxAdapter(
               child: Text(
@@ -93,7 +93,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               )
             ),
             SliverToBoxAdapter(
-              child: 0.05.sw.verticalSpace,
+              child: 0.025.sw.verticalSpace,
             ),
             SliverToBoxAdapter(
               child: Container(
@@ -154,7 +154,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         end: Offset.zero
                       )
                     ),
-                    child: OrderItemCard(item: orderItems[index])
+                    child: CartItemCard(item: orderItems[index])
                   ),
                 );
               },
