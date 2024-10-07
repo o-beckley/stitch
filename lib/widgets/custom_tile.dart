@@ -40,35 +40,42 @@ class CustomTile extends StatelessWidget {
                   padding: EdgeInsets.only(right: 0.05.sw),
                   child: leading,
                 ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if(hintText != null)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 0.002.sw),
-                      child: Text(
-                        hintText!,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: context.watch<UIColors>().outline
-                        )
+              Expanded(
+                flex: 5,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if(hintText != null)
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 0.002.sw),
+                        child: Text(
+                          hintText!,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: context.watch<UIColors>().outline
+                          )
+                        ),
                       ),
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium
                     ),
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium
-                  ),
-                  if(subtitle != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 0.002.sw),
-                      child: Text(
-                        subtitle!,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: context.watch<UIColors>().outline
-                        )
+                    if(subtitle != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.002.sw),
+                        child: Text(
+                          subtitle!,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: context.watch<UIColors>().outline
+                          )
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
               const Expanded(child: SizedBox()),
               if(trailing != null)
