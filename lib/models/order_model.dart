@@ -1,7 +1,7 @@
 import 'package:stitch/models/delivery_details_model.dart';
 import 'package:stitch/models/order_item_model.dart';
 
-enum OrderStatus {placed, confirmed, shipped, delivered, cancelled, returned}
+enum OrderStatus {placed, confirmed, transit, delivered, cancelled, returned}
 
 class StitchOrder{
   final String? id;
@@ -24,7 +24,7 @@ class StitchOrder{
    return switch (name){
       'placed' => OrderStatus.placed,
       'confirmed' => OrderStatus.confirmed,
-      'shipped' => OrderStatus.shipped,
+      'transit' => OrderStatus.transit,
       'delivered' => OrderStatus.delivered,
       'cancelled' => OrderStatus.cancelled,
       'returned' => OrderStatus.returned,

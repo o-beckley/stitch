@@ -183,24 +183,22 @@ class CustomSvgIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Opacity(
-        opacity: disabled ? 0.32 : 1,
-        child: Material(
-          color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
+        color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
+        borderRadius: BorderRadius.circular(radius / 2),
+        child: InkWell(
+          onTap: disabled ? null : onTap,
           borderRadius: BorderRadius.circular(radius / 2),
-          child: InkWell(
-            onTap: disabled ? null : onTap,
-            borderRadius: BorderRadius.circular(radius / 2),
-            child: SizedBox.square(
-              dimension: radius,
-              child: Center(
-                child: SvgPicture.asset(
-                  svgIconPath,
-                  colorFilter: ColorFilter.mode(
-                    iconColor ?? context.watch<UIColors>().onSurface,
-                    BlendMode.srcIn
-                  ),
+          child: SizedBox.square(
+            dimension: radius,
+            child: Center(
+              child: SvgPicture.asset(
+                svgIconPath,
+                colorFilter: ColorFilter.mode(
+                  iconColor ?? context.watch<UIColors>().onSurface,
+                  BlendMode.srcIn
                 ),
               ),
             ),

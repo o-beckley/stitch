@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:stitch/config/asset_paths.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/address_model.dart';
 import 'package:stitch/models/delivery_details_model.dart';
@@ -12,6 +13,7 @@ import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/utils/toasts.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
+import 'package:stitch/widgets/custom_tile.dart';
 import 'package:stitch/widgets/loading_indicator.dart';
 import 'package:stitch/widgets/placeholders.dart';
 
@@ -31,6 +33,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool checkingOut = false;
   late Future<double?> subtotal;
   late Future<double?> totalDeliveryFees;
+  Address? selectedAddress;
 
   @override
   void initState(){
@@ -55,6 +58,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         title: 'Checkout'
                     ),
                   ),
+                  SliverToBoxAdapter(
+                    child: CustomTile(
+                      hintText: "Delivery address",
+                      title: "Select a delivery address",
+                      trailing: CustomSvgIconButton(svgIconPath: AssetPaths.arrowDownIcon),
+                      onTap: (){
+                        // TODO: show a modal bottom sheet to pick an address or add a new one
+                      },
+                    ),
+                  ),
+                  SliverToBoxAdapter(child: 0.05.sw.verticalSpace),
+                  SliverToBoxAdapter(
+                    child: CustomTile(
+                      hintText: "Payment method",
+                      title: "Select a payment method",
+                      trailing: CustomSvgIconButton(svgIconPath: AssetPaths.arrowDownIcon),
+                      onTap: (){
+                        // TODO: show a modal bottom sheet to pick a payout method or add a new one
+                      },
+                    ),
+                  )
                 ],
               ),
             ),

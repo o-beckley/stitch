@@ -58,7 +58,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 0.025.sw),
-                child: _DisplayOrderState(status: 'In transit', timestamp: widget.order.status[OrderStatus.shipped]),
+                child: _DisplayOrderState(status: 'In transit', timestamp: widget.order.status[OrderStatus.transit]),
               ),
             ),
             SliverToBoxAdapter(

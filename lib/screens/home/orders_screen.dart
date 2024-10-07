@@ -6,7 +6,6 @@ import 'package:stitch/models/order_model.dart';
 import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
-import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/horizontal_picker.dart';
 import 'package:stitch/widgets/loading_indicator.dart';
 import 'package:stitch/widgets/order_card.dart';
@@ -17,16 +16,10 @@ class OrdersScreen extends StatefulWidget {
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
 }
-final List<String> views = [
-  'Processing',
-  'Shipped',
-  'Delivered',
-  'Returned',
-  'Cancelled',
-];
-List<StitchOrder>? orders;
 
 class _OrdersScreenState extends State<OrdersScreen> {
+  int selectedCategory = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +28,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         future: context.watch<UserManagementService>().getOrders(),
         builder: (context, snapshot) {
           if(snapshot.data != null && snapshot.data!.isNotEmpty){
+            final orders = snapshot.data!.where((e) => e.currentStatus == OrderStatus.values[selectedCategory]).toList();
             return CustomScrollView(
               shrinkWrap: true,
               slivers: [
@@ -50,17 +44,23 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 SliverToBoxAdapter(
                   child: HorizontalPicker(
                     items: OrderStatus.values.map((e) => e.name).toList(),
+                    startingIndex: selectedCategory,
                     endPadding: 0.05.sw,
+                    onItemPicked: (index){
+                      setState(() {
+                        selectedCategory = index;
+                      });
+                    },
                   ),
                 ),
                 SliverPadding(
                   padding: EdgeInsets.all(0.05.sw),
                   sliver: SliverList.builder(
-                    itemCount: snapshot.data!.length,
+                    itemCount: orders.length,
                     itemBuilder: (context, index){
                       return Padding(
                         padding: EdgeInsets.only(top: 0.025.sw),
-                        child: OrderCard(order: snapshot.data![index]),
+                        child: OrderCard(order: orders[index]),
                       );
                     },
                   ),
@@ -81,13 +81,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         fontWeight: FontWeight.bold
                     ),
                   ),
-                  0.1.sw.verticalSpace,
-                  CustomFilledButton(
-                    label: "Explore categories",
-                    onTap: (){
-                      // TODO: do sum
-                    },
-                  )
                 ],
               ),
             );

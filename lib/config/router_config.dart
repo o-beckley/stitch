@@ -18,6 +18,7 @@ import 'package:stitch/screens/home/checkout_screen.dart';
 import 'package:stitch/screens/home/home.dart';
 import 'package:stitch/screens/home/order_details_screen.dart';
 import 'package:stitch/screens/home/order_success_screen.dart';
+import 'package:stitch/screens/home/payment_screen.dart';
 import 'package:stitch/screens/home/product_screen.dart';
 
 final GoRouter routerConfig = GoRouter( // TODO: add routing animations
@@ -118,6 +119,13 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
           key: state.pageKey
         );
       }
+    ),
+    GoRoute(
+      path: RoutePaths.paymentScreen,
+      pageBuilder: (context, state) => CupertinoPage(
+          child: const PaymentScreen(),
+          key: state.pageKey
+      )
     ),
     GoRoute(
       path: RoutePaths.productScreen,

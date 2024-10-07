@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 
-class AddressScreen extends StatefulWidget {
-  const AddressScreen({super.key});
+class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({super.key});
 
   @override
-  State<AddressScreen> createState() => _AddressScreenState();
+  State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-class _AddressScreenState extends State<AddressScreen> {
+class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class _AddressScreenState extends State<AddressScreen> {
           color: context.watch<UIColors>().onPrimaryContainer,
         ),
         onPressed: (){
-          // TODO: show a modal bottom sheet with the address form
+          // TODO: show a modal bottom sheet with the payment form
         },
       ),
       body: Padding(
@@ -32,7 +32,7 @@ class _AddressScreenState extends State<AddressScreen> {
           slivers: [
             SliverPersistentHeader(
               delegate: CustomSliverAppBar(
-                title: "Address",
+                title: "Payment"
               ),
             )
           ],

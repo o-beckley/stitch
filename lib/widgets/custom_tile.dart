@@ -68,7 +68,7 @@ class CustomTile extends StatelessWidget {
                         child: Text(
                           subtitle!,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             color: context.watch<UIColors>().outline
                           )
                         ),
