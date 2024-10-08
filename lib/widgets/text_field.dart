@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:provider/provider.dart';
 
