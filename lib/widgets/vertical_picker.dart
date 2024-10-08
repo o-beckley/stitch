@@ -41,23 +41,23 @@ class _VerticalPickerState extends State<VerticalPicker> {
         maxHeight: 0.7.sh,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20)
+        borderRadius: BorderRadius.circular(0.05.sw),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(0.05.sw),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold
-                    ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.02.sw),
+                child: Text(
+                  widget.title,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold
                   ),
-                )
+                ),
+              )
             ),
             Flexible(
               child: SingleChildScrollView(
@@ -67,7 +67,7 @@ class _VerticalPickerState extends State<VerticalPicker> {
                     ...List.generate(
                       widget.items.length,
                       (index) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        padding: EdgeInsets.symmetric(vertical: 0.015.sw),
                         child: CustomWideButton(
                           label: widget.items[index],
                           color: selectedIndex == index
