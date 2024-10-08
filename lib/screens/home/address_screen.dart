@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
+import 'package:stitch/widgets/address_form.dart';
 import 'package:stitch/widgets/app_bar.dart';
+
 
 class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key});
@@ -14,6 +17,7 @@ class AddressScreen extends StatefulWidget {
 class _AddressScreenState extends State<AddressScreen> {
   @override
   Widget build(BuildContext context) {
+    final addresses = context.read<UserManagementService>().currentUser?.addresses;
     return Scaffold(
       backgroundColor: context.watch<UIColors>().surface,
       floatingActionButton: FloatingActionButton(
@@ -23,7 +27,17 @@ class _AddressScreenState extends State<AddressScreen> {
           color: context.watch<UIColors>().onPrimaryContainer,
         ),
         onPressed: (){
-          // TODO: show a modal bottom sheet with the address form
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(),
+            builder: (context){
+              return Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: AddressForm(),
+              );
+            }
+          );
         },
       ),
       body: Padding(
@@ -34,6 +48,13 @@ class _AddressScreenState extends State<AddressScreen> {
               delegate: CustomSliverAppBar(
                 title: "Address",
               ),
+            ),
+            if(addresses != null && addresses.isNotEmpty)
+            SliverList.builder(
+              itemCount: addresses.length,
+              itemBuilder: (context, index){
+                return Text(addresses[index].state);
+              },
             )
           ],
         ),
