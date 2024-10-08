@@ -7,6 +7,7 @@ class AuthService extends ChangeNotifier{
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User? get user => FirebaseAuth.instance.currentUser;
+  Stream<User?> get userChanges => FirebaseAuth.instance.userChanges();
   bool get isSignedIn => user != null;
 
   Future<bool> signIn(String email, String password) async {
@@ -71,6 +72,7 @@ class AuthService extends ChangeNotifier{
   Future<bool> signInSilently() async {
     try {
       final googleSignInAccount = await _googleSignIn.signInSilently();
+      log("signInSilently: ${googleSignInAccount != null ? "signed in with stealth :)" : "could not sign in"}");
       return googleSignInAccount != null;
     }
     catch (e){
