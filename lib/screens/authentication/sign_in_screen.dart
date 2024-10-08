@@ -5,6 +5,7 @@ import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/network_services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
@@ -116,17 +117,45 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _googleSignIn () async {
     final auth = context.read<AuthService>();
+    final userService = context.read<UserManagementService>();
     setState(() {
       isSigningIn = true;
     });
     bool signedIn = await auth.signInWithGoogle();
-    if(signedIn && mounted){
-      context.pushReplacement(RoutePaths.home);
+    final hasProfile = await userService.hasProfile;
+    if(signedIn){
+      if(!hasProfile){
+        await userService.updateProfile(
+          firstName: _splitName(userService.user?.displayName)[0],
+          lastName: _splitName(userService.user?.displayName)[1],
+          email: userService.user?.email,
+          phoneNumber: userService.user?.phoneNumber,
+        );
+        if(mounted){
+          context.pushReplacement(RoutePaths.setPreferencesScreen);
+        }
+      }
+      else if(mounted){
+        context.pushReplacement(RoutePaths.home);
+      }
     }
     else {
       setState(() {
         isSigningIn = false;
       });
+    }
+  }
+
+  List<String?> _splitName(String? joinedName){
+    if(joinedName == null){
+      return [null, null];
+    }
+    else if(joinedName.split(' ').length > 1){
+      List<String> split = joinedName.split(' ');
+      return [split.first, split.last];
+    }
+    else{
+      return [joinedName, null];
     }
   }
 }

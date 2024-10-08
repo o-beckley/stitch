@@ -22,23 +22,22 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _authenticate() async {
-    await Future.delayed(const Duration(seconds: 1));
-    if(mounted) {
-      final auth = context.read<AuthService>();
-      final userService = context.read<UserManagementService>();
-      if (auth.isSignedIn) {
-        userService.fetchCurrentUser()
-        .then(
-          (_){
-            if(mounted){
-              context.pushReplacement(RoutePaths.home);
-            }
+    final auth = context.read<AuthService>();
+    final userService = context.read<UserManagementService>();
+    await auth.signInSilently();
+    if (auth.isSignedIn) {
+      userService.fetchCurrentUser()
+      .then(
+        (_) async {
+          await Future.delayed(const Duration(seconds: 1));
+          if(mounted){
+            context.pushReplacement(RoutePaths.home);
           }
-        );
-      }
-      else {
-        context.pushReplacement(RoutePaths.signInScreen);
-      }
+        }
+      );
+    }
+    else if(mounted){
+      context.pushReplacement(RoutePaths.signInScreen);
     }
   }
 
