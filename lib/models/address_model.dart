@@ -11,6 +11,14 @@ class Address{
     required this.country,
   });
 
+  @override
+  int get hashCode => (street + city + state + country).hashCode;
+
+  @override
+  bool operator ==(covariant Address other) {
+    return hashCode == other.hashCode;
+  }
+
   static Address fromMap(Map<String, dynamic> data){
     return Address(
         street: data['street'],

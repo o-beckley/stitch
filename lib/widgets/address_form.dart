@@ -34,6 +34,12 @@ class _AddressFormState extends State<AddressForm> {
 
   @override void initState(){
     super.initState();
+    if(widget.address != null){
+      streetController.text = widget.address!.street;
+      cityController.text = widget.address!.city;
+      stateController.text = widget.address!.state;
+      countryController.text = widget.address!.country;
+    }
   }
 
   @override
@@ -89,8 +95,8 @@ class _AddressFormState extends State<AddressForm> {
               ),
               0.05.sw.verticalSpace,
               CustomFilledButton(
-                label: "Add address",
-                onTap: _addAddress,
+                label: widget.address == null ? "Add address" : "Edit address",
+                onTap: widget.address == null ? _addAddress : _editAddress,
                 disabled: <String>[
                   streetController.text,
                   cityController.text,
@@ -123,6 +129,28 @@ class _AddressFormState extends State<AddressForm> {
     }
     if(mounted && context.canPop()){
       context.pop();
+    }
+  }
+  void _editAddress() async {
+    if(widget.address != null){
+      final userService = context.read<UserManagementService>();
+      final addresses = userService.currentUser?.addresses ?? [];
+      final indexOfOriginal = addresses.indexOf(widget.address!);
+      addresses[indexOfOriginal] = Address(
+          street: streetController.text,
+          city: cityController.text,
+          state: stateController.text,
+          country: countryController.text
+      );
+      final bool successful = await userService.updateProfile(
+          addresses: addresses.toSet().toList() // converting to set then lists removes duplicates
+      );
+      if (mounted && !successful){
+        Toasts.showToast("There was a problem editing the address", context);
+      }
+      if(mounted && context.canPop()){
+        context.pop();
+      }
     }
   }
 }
