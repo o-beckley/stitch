@@ -11,7 +11,7 @@ class StitchUser{
   final String? email;
   final Gender? gender;
   final AgeGroup? ageGroup;
-  final Address? address;
+  final List<Address>? addresses;
   final List<String>? favourites;
   final List<OrderItem>? cart;
   final List<String>? orderIds;
@@ -24,7 +24,7 @@ class StitchUser{
     this.email,
     this.gender,
     this.ageGroup,
-    this.address,
+    this.addresses,
     this.favourites,
     this.cart,
     this.orderIds,
@@ -49,7 +49,7 @@ class StitchUser{
       email: data['email'],
       gender: data['gender'] == 'female' ? Gender.female : Gender.male,
       ageGroup: _getAgeGroup(data['ageGroup']),
-      address: data['address'] != null ? Address.fromMap(data['address']): null,
+      addresses: (data['addresses'] as List?)?.cast<Map<String, dynamic>>().map((e) => Address.fromMap(e)).toList(),
       favourites: (data['favourites'] as List?)?.cast<String>(),
       cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList(),
       orderIds: (data['orderIds'] as List?)?.cast<String>(),
@@ -65,7 +65,7 @@ class StitchUser{
       'email': email,
       'gender': gender?.name,
       'ageGroup': ageGroup?.name,
-      'address': address?.toMap(),
+      'addresses': addresses?.map((e) => e.toMap()).toList(),
       'favourites': favourites,
       'cart': cart?.map((e) => e.toMap()).toList(),
       'orderIds': orderIds,
@@ -80,7 +80,7 @@ class StitchUser{
     String? email,
     Gender? gender,
     AgeGroup? ageGroup,
-    Address? address,
+    List<Address>? addresses,
     List<String>? favourites,
     List<OrderItem>? cart,
     List<String>? orderIds,
@@ -93,7 +93,7 @@ class StitchUser{
       email: email ?? this.email,
       gender: gender ?? this.gender,
       ageGroup: ageGroup ?? this.ageGroup,
-      address: address ?? this.address,
+      addresses: addresses ?? this.addresses,
       favourites: favourites ?? this.favourites,
       cart: cart ?? this.cart,
       orderIds: orderIds ?? this.orderIds,

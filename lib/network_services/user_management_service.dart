@@ -76,7 +76,7 @@ class UserManagementService extends ChangeNotifier{
     String? email,
     Gender? gender,
     AgeGroup? ageGroup,
-    Address? address,
+    List<Address>? addresses,
     List<String>? favourites,
     List<OrderItem>? cart
   }) async {
@@ -91,7 +91,7 @@ class UserManagementService extends ChangeNotifier{
           email: email,
           gender: gender,
           ageGroup: ageGroup,
-          address: address,
+          addresses: addresses,
           favourites: favourites,
           cart: cart,
         );
