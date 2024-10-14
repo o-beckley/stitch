@@ -67,7 +67,8 @@ class _AddressScreenState extends State<AddressScreen> {
                         )
                     ),
                     child: CustomTile(
-                      title: "${address.street}, ${address.city}\n${address.state}, ${address.country}",
+                      title: "${address.street}, ${address.city}",
+                      subtitle: "${address.state}, ${address.country}",
                       trailing: CustomTextButton(
                         label: "Edit",
                         color: context.watch<UIColors>().primary,

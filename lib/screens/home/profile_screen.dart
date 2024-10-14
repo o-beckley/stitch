@@ -11,6 +11,7 @@ import 'package:stitch/utils/router_utils.dart';
 import 'package:stitch/widgets/app_bar.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/custom_tile.dart';
+import 'package:stitch/widgets/profile_form.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -43,7 +44,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   label: "Edit",
                   color: context.watch<UIColors>().primary,
                   onTap: (){
-                    // TODO: navigate to edit profile screen or show a modal bottom sheet? 🙂
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(),
+                        builder: (context){
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                            child: ProfileForm(),
+                          );
+                        }
+                    );
                   },
                 ),
               ),
