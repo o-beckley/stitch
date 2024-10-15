@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/models/address_model.dart';
 import 'package:stitch/network_services/user_management_service.dart';
+import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/utils/toasts.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/text_field.dart';
@@ -46,7 +47,7 @@ class _AddressFormState extends State<AddressForm> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(0.05.sw)
+        color: context.watch<UIColors>().surface
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(
