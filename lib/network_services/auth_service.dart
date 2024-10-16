@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class AuthService extends ChangeNotifier{
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final database = FirebaseDatabase.instance;
 
   User? get user => FirebaseAuth.instance.currentUser;
   Stream<User?> get userChanges => FirebaseAuth.instance.userChanges();
@@ -89,6 +91,33 @@ class AuthService extends ChangeNotifier{
     catch(e){
       log("sendPasswordResetEmail: ${e.toString()}");
       return true;
+    }
+  }
+
+  void handlePresence(){
+    try {
+      database
+      .ref()
+      .child(".info/connected")
+      .onValue
+      .listen(
+        (e) async {
+          final connected = e.snapshot.value as bool? ?? false;
+          if (isSignedIn && connected) {
+            await database.ref("connection_status/${user!.uid}").update({
+              "state": "connected",
+              "last_changed": ServerValue.timestamp
+            });
+            await database.ref("connection_status/${user!.uid}").onDisconnect().update({
+              "state": "disconnected",
+              "last_changed": ServerValue.timestamp
+            });
+          }
+        }
+      );
+    }
+    catch(e){
+      log("handlePresence: ${e.toString()}");
     }
   }
 

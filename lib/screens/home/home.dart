@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stitch/config/asset_paths.dart';
+import 'package:stitch/network_services/auth_service.dart';
 import 'package:stitch/screens/home/home_screen.dart';
 import 'package:stitch/screens/home/notification_screen.dart';
 import 'package:stitch/screens/home/orders_screen.dart';
@@ -16,6 +18,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int selectedScreenIndex = 0;
+
+  @override
+  void initState(){
+    super.initState();
+    context.read<AuthService>().handlePresence();
+  }
 
   @override
   Widget build(BuildContext context) {
