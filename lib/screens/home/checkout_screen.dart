@@ -330,25 +330,33 @@ class _AddressList extends StatelessWidget {
   Widget build(BuildContext context) {
     final addresses = context.read<UserManagementService>().currentUser?.addresses;
     if(addresses != null && addresses.isNotEmpty){
-      return Padding(
-        padding: EdgeInsets.all(0.05.sw),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(
-            addresses.length,
-            (index){
-              return CustomTile(
-                title: "${addresses[index].street}, ${addresses[index].city}",
-                subtitle: "${addresses[index].state}, ${addresses[index].country}",
-                onTap: (){
-                  onAddressSelected(addresses[index]);
-                  if(context.canPop()){
-                    context.pop();
-                  }
-                },
-              );
-            }
-          )
+      return Container(
+        decoration: BoxDecoration(
+          color: context.watch<UIColors>().surface
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(0.05.sw),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              addresses.length,
+              (index){
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0.02.sw),
+                  child: CustomTile(
+                    title: "${addresses[index].street}, ${addresses[index].city}",
+                    subtitle: "${addresses[index].state}, ${addresses[index].country}",
+                    onTap: (){
+                      onAddressSelected(addresses[index]);
+                      if(context.canPop()){
+                        context.pop();
+                      }
+                    },
+                  ),
+                );
+              }
+            )
+          ),
         ),
       );
     }

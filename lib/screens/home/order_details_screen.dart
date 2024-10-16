@@ -128,22 +128,37 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               child: 0.1.sw.verticalSpace,
             ),
             SliverToBoxAdapter(
-                child: Text(
-                  "Shipping details",
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                  ),
-                )
+              child: Text(
+                "Shipping details",
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+              )
             ),
             SliverToBoxAdapter(
               child: 0.025.sw.verticalSpace,
             ),
             SliverToBoxAdapter(
               child: CustomTile(
-                title: "Shipping details", //TODO
+                hintText: "Address",
+                title:
+                  "${widget.order.deliveryDetails.address.street}"
+                  ", ${widget.order.deliveryDetails.address.city}"
+                  "\n${widget.order.deliveryDetails.address.state}"
+                  ", ${widget.order.deliveryDetails.address.country}",
               ),
             ),
+            SliverToBoxAdapter(
+              child: 0.025.sw.verticalSpace,
+            ),
+            SliverToBoxAdapter(
+              child: CustomTile(
+                  hintText: "Phone number",
+                  title: widget.order.deliveryDetails.phoneNumber
+              ),
+            ),
+
           ],
         ),
       ),
