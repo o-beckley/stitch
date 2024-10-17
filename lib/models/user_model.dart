@@ -1,4 +1,5 @@
 import 'package:stitch/models/address_model.dart';
+import 'package:stitch/models/notification_model.dart';
 import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/constants.dart';
 export 'package:stitch/models/constants.dart';
@@ -15,6 +16,7 @@ class StitchUser{
   final List<String>? favourites;
   final List<OrderItem>? cart;
   final List<String>? orderIds;
+  final List<StitchNotification>? notifications;
 
   StitchUser({
     required this.id,
@@ -28,6 +30,7 @@ class StitchUser{
     this.favourites,
     this.cart,
     this.orderIds,
+    this.notifications,
   });
 
   static AgeGroup _getAgeGroup(name){
@@ -53,6 +56,7 @@ class StitchUser{
       favourites: (data['favourites'] as List?)?.cast<String>(),
       cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList(),
       orderIds: (data['orderIds'] as List?)?.cast<String>(),
+      notifications: (data['notifications'] as List?)?.map((e) => StitchNotification.fromMap(e)).toList()
     );
   }
 
@@ -69,6 +73,7 @@ class StitchUser{
       'favourites': favourites,
       'cart': cart?.map((e) => e.toMap()).toList(),
       'orderIds': orderIds,
+      'notifications': notifications?.map((e) => e.toMap()),
     };
   }
 
@@ -84,6 +89,7 @@ class StitchUser{
     List<String>? favourites,
     List<OrderItem>? cart,
     List<String>? orderIds,
+    List<StitchNotification>? notifications,
   }){
     return StitchUser(
       id: id ?? this.id,
@@ -97,6 +103,7 @@ class StitchUser{
       favourites: favourites ?? this.favourites,
       cart: cart ?? this.cart,
       orderIds: orderIds ?? this.orderIds,
+      notifications: notifications ?? this.notifications,
     );
   }
 }
