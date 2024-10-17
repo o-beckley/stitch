@@ -18,7 +18,7 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  int selectedCategory = 1;
+  int selectedCategory = 0;
 
   @override
   Widget build(BuildContext context) {

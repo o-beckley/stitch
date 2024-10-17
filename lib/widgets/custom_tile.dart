@@ -40,7 +40,7 @@ class CustomTile extends StatelessWidget {
                   child: leading,
                 ),
               Expanded(
-                flex: 5,
+                flex: 10,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
