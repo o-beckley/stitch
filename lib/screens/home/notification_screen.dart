@@ -20,32 +20,51 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     final notifications = context.watch<UserManagementService>().currentUser?.notifications;
-    return Scaffold(
-      backgroundColor: context.watch<UIColors>().surface,
-      body: Padding(
-        padding: EdgeInsets.all(0.05.sw),
-        child: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate: CustomSliverAppBar(
-                title: "Notifications",
-                hasBackButton: false,
+    if(notifications?.isNotEmpty ?? false) {
+      return Scaffold(backgroundColor: context.watch<UIColors>().surface,
+        body: Padding(
+          padding: EdgeInsets.all(0.05.sw),
+          child: CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                delegate: CustomSliverAppBar(
+                  title: "Notifications",
+                  hasBackButton: false,
+                ),
               ),
-            ),
-            if(notifications != null)
-              SliverList.builder(
-                itemCount: notifications.length,
-                itemBuilder: (context, index){
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 0.02.sw),
-                    child: _NotificationTile(notification: notifications[index]),
-                  );
-                },
-              ),
-          ],
+              if(notifications != null)
+                SliverList.builder(
+                  itemCount: notifications.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 0.02.sw),
+                      child: _NotificationTile(
+                          notification: notifications[index]),
+                    );
+                  },
+                ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+    else{
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(AssetPaths.bellImage),
+              0.05.sw.verticalSpace,
+              Text(
+                "No notifications yet",
+                style: Theme.of(context).textTheme.headlineMedium
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
 

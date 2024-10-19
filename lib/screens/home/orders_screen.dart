@@ -77,9 +77,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   0.05.sw.verticalSpace,
                   Text(
                     "No orders yet",
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium
                   ),
                 ],
               ),
