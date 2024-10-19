@@ -139,16 +139,16 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             FutureBuilder(
-                future: subtotal,
-                builder: (context, snapshot) {
-                  if(snapshot.data != null){
-                    return Text(
-                      "${snapshot.data}",
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    );
-                  }
-                  return TextPlaceHolder(height: 14, width: 0.15.sw);
+              future: subtotal,
+              builder: (context, snapshot) {
+                if(snapshot.data != null){
+                  return Text(
+                    "${snapshot.data}",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  );
                 }
+                return TextPlaceHolder(height: 14, width: 0.15.sw);
+              }
             )
           ],
         ),
@@ -189,18 +189,18 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             FutureBuilder(
-                future: Future.wait([subtotal, totalDeliveryFees]),
-                builder: (context, snapshot) {
-                  if(snapshot.data != null){
-                    return Text(
-                      "${snapshot.data![0]! + snapshot.data![1]!}",
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold
-                      ),
-                    );
-                  }
-                  return TextPlaceHolder(height: 14, width: 0.15.sw);
+              future: Future.wait([subtotal, totalDeliveryFees]),
+              builder: (context, snapshot) {
+                if(snapshot.data != null){
+                  return Text(
+                    "${snapshot.data![0]! + snapshot.data![1]!}",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold
+                    ),
+                  );
                 }
+                return TextPlaceHolder(height: 14, width: 0.15.sw);
+              }
             )
           ],
         ),

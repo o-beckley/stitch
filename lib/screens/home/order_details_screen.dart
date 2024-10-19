@@ -46,7 +46,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           slivers: [
             SliverPersistentHeader(
               delegate: CustomSliverAppBar(
-                title: "Order #${widget.order.id}",
+                title: "Order ${widget.order.id}",
               ),
             ),
             SliverToBoxAdapter(

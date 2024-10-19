@@ -20,6 +20,7 @@ import 'package:stitch/screens/home/order_details_screen.dart';
 import 'package:stitch/screens/home/order_success_screen.dart';
 import 'package:stitch/screens/home/payment_screen.dart';
 import 'package:stitch/screens/home/product_screen.dart';
+import 'package:stitch/screens/home/search_screen.dart';
 
 final GoRouter routerConfig = GoRouter( // TODO: add routing animations
   initialLocation: RoutePaths.splashScreen,
@@ -34,10 +35,25 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
     ),
     GoRoute(
       path: RoutePaths.cartScreen,
-      pageBuilder: (context, state) => CupertinoPage(
-        child: const CartScreen(),
-        key: state.pageKey
-      )
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+            child: const CartScreen(),
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 400),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder: (context, animation, _, child){
+              return SlideTransition(
+                position: animation.drive(CurveTween(curve: Curves.easeIn)).drive(
+                  Tween<Offset>(
+                      begin: Offset(1, -1),
+                      end: Offset(0, 0)
+                  ),
+                ),
+                child: child,
+              );
+            }
+        );
+      }
     ),
     GoRoute(
         path: RoutePaths.checkoutScreen,
@@ -150,6 +166,28 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
         child: const ResetEmailSentScreen(),
         key: state.pageKey
       )
+    ),
+    GoRoute(
+      path: RoutePaths.searchScreen,
+      pageBuilder: (context, state){
+        return CustomTransitionPage(
+          child: const SearchScreen(),
+          key: state.pageKey,
+          transitionDuration: const Duration(milliseconds: 400),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, _, child){
+            return SlideTransition(
+              position: animation.drive(CurveTween(curve: Curves.easeIn)).drive(
+                Tween<Offset>(
+                  begin: Offset(0, 1),
+                  end: Offset(0, 0)
+                ),
+              ),
+              child: child,
+            );
+          }
+        );
+      }
     ),
     GoRoute(
       path: RoutePaths.setPreferencesScreen,

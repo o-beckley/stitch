@@ -24,6 +24,7 @@ class AssetPaths {
   static const String removeIcon = 'assets/icons/remove.svg';
   static const String searchIcon = 'assets/icons/search.svg';
   static const String starIcon = 'assets/icons/star.svg';
+  static const String xIcon = 'assets/icons/x.svg';
 
   // png images
   static const String bellImage = 'assets/images/bell.png';
