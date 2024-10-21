@@ -5,14 +5,16 @@ import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
-  final String label;
+  final String? label;
   final List<String> items;
+  final int? initialIndex;
   final Function(int)? onItemSelected;
   final bool isExpanded;
 
   const CustomDropDownMenu({
-    required this.label,
+    this.label,
     required this.items,
+    this.initialIndex,
     this.onItemSelected,
     this.isExpanded = false,
     super.key
@@ -25,11 +27,12 @@ class CustomDropDownMenu extends StatefulWidget {
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   late int selectedIndex;
   late List<String> items;
+
   @override
   void initState(){
     super.initState();
-    selectedIndex =  -1;
-    items = [widget.label, ...widget.items];
+    selectedIndex = (widget.initialIndex) ?? (widget.label != null ? -1 : 0);
+    items = [if(widget.label != null) widget.label!, ...widget.items];
   }
 
   @override
@@ -42,7 +45,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
           borderRadius: BorderRadius.circular(25)
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: DropdownButton<int>(
             value: selectedIndex,
             isExpanded: widget.isExpanded,
@@ -51,7 +54,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             icon: SvgPicture.asset(
               AssetPaths.arrowDownIcon,
               colorFilter: ColorFilter.mode(
-                context.watch<UIColors>().onSurface,
+                context.watch<UIColors>().outline,
                 BlendMode.srcIn
               ),
             ),
@@ -59,15 +62,15 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               items.length,
               (index){
                 return DropdownMenuItem(
-                  enabled: index != 0,
-                  value: index - 1,
+                  enabled: widget.label != null ? index != 0 : true,
+                  value: widget.label != null ? index - 1 : index,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
                         items[index],
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: index != 0
-                          ? context.watch<UIColors>().onSurface
+                        color: index == 0 && widget.label != null
+                          ? context.watch<UIColors>().outline.withOpacity(0.5)
                           : context.watch<UIColors>().outline
                       ),
                     ),
