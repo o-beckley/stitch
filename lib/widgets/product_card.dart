@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/product_model.dart';
 import 'package:stitch/theme/color_theme.dart';
-import 'package:stitch/utils/toasts.dart';
 import 'package:stitch/widgets/custom_network_image.dart';
 import 'package:stitch/widgets/placeholders.dart';
 import 'package:stitch/widgets/tonal_elevation.dart';
