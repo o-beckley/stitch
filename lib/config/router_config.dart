@@ -45,7 +45,7 @@ final GoRouter routerConfig = GoRouter( // TODO: add routing animations
               return SlideTransition(
                 position: animation.drive(CurveTween(curve: Curves.easeIn)).drive(
                   Tween<Offset>(
-                      begin: Offset(1, -1),
+                      begin: Offset(1, 0),
                       end: Offset(0, 0)
                   ),
                 ),

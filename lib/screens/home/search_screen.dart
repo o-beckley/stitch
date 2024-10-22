@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:stitch/config/asset_paths.dart';
+import 'package:stitch/models/product_model.dart';
+import 'package:stitch/network_services/product_provider_service.dart';
 import 'package:stitch/widgets/buttons.dart';
 import 'package:stitch/widgets/custom_search_bar.dart';
+import 'package:stitch/widgets/product_card.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -15,7 +20,10 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocus = FocusNode();
-
+  QueryDocumentSnapshot<Product>? lastQuerySnapshot;
+  String lastQuery = "";
+  List<Product> products = [];
+  
   @override
   void initState(){
     super.initState();
@@ -28,6 +36,32 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     );
   }
+  
+  Future<void> search() async {
+    if(searchController.text != lastQuery){
+      clearSearch();
+    }
+    final productService = context.read<ProductProviderService>();
+    final result = await productService.search(
+      searchController.text,
+      lastQuerySnapshot: lastQuerySnapshot
+    );
+    if(result != null && result.docs.isNotEmpty){
+      lastQuerySnapshot = result.docs.last;
+      setState(() {
+        products.addAll(result.docs.map((e) => e.data()));
+      });
+    }
+  }
+  
+  void clearSearch() async {
+    setState(() {
+      lastQuerySnapshot = null;
+      lastQuery = "";
+      products = [];
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +72,27 @@ class _SearchScreenState extends State<SearchScreen> {
             SliverPersistentHeader(
               delegate: _SliverTopSearchArea(
                 controller: searchController,
-                focusNode: searchFocus
+                focusNode: searchFocus,
+                onEditingComplete: (){
+                  search();
+                },
+                onClear: (){
+                  clearSearch();
+                }
               ),
-            )
+            ),
+            SliverGrid.builder(
+              itemCount: products.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                childAspectRatio: 4/7
+              ),
+              itemBuilder: (context, index){
+                return Center(
+                  child: ProductCard(product: products[index])
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -48,17 +100,30 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class _TopSearchArea extends StatelessWidget {
+class _SliverTopSearchArea extends SliverPersistentHeaderDelegate{
   final TextEditingController controller;
   final FocusNode focusNode;
+  final VoidCallback? onEditingComplete;
+  final VoidCallback? onClear;
 
-  const _TopSearchArea({
+  _SliverTopSearchArea({
     required this.controller,
     required this.focusNode,
+    this.onEditingComplete,
+    this.onClear,
   });
 
   @override
-  Widget build(BuildContext context) {
+  double get maxExtent => 0.2.sw;
+
+  @override
+  double get minExtent => 0.2.sw;
+
+  @override
+  bool shouldRebuild(_SliverTopSearchArea oldDelegate) => false; // TODO: ?
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
       child: Padding(
         padding: const EdgeInsets.only(top: 40),
@@ -79,39 +144,14 @@ class _TopSearchArea extends StatelessWidget {
                 child: CustomSearchBar(
                   controller: controller,
                   focusNode: focusNode,
+                  onEditingComplete: onEditingComplete,
+                  onClear: onClear,
                 ),
               ),
             )
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SliverTopSearchArea extends SliverPersistentHeaderDelegate{
-  final TextEditingController controller;
-  final FocusNode focusNode;
-
-  _SliverTopSearchArea({
-    required this.controller,
-    required this.focusNode
-  });
-
-  @override
-  double get maxExtent => 0.4.sw;
-
-  @override
-  double get minExtent => 0.4.sw;
-
-  @override
-  bool shouldRebuild(_SliverTopSearchArea oldDelegate) => false; // TODO: ?
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return _TopSearchArea(
-      controller: controller,
-      focusNode: focusNode
     );
   }
 }

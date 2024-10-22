@@ -42,50 +42,58 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
       child: Container(
         decoration: BoxDecoration(
           color: context.watch<UIColors>().surfaceContainer,
-          borderRadius: BorderRadius.circular(25)
+          borderRadius: BorderRadius.circular(20)
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: DropdownButton<int>(
-            value: selectedIndex,
-            isExpanded: widget.isExpanded,
-            isDense: true,
-            underline: const SizedBox.shrink(),
-            icon: SvgPicture.asset(
-              AssetPaths.arrowDownIcon,
-              colorFilter: ColorFilter.mode(
-                context.watch<UIColors>().outline,
-                BlendMode.srcIn
-              ),
-            ),
-            items: List.generate(
-              items.length,
-              (index){
-                return DropdownMenuItem(
-                  enabled: widget.label != null ? index != 0 : true,
-                  value: widget.label != null ? index - 1 : index,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(
-                        items[index],
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: index == 0 && widget.label != null
-                          ? context.watch<UIColors>().outline.withOpacity(0.5)
-                          : context.watch<UIColors>().outline
-                      ),
+        child: SizedBox(
+          height: 40,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: DropdownButton<int>(
+                value: selectedIndex,
+                isExpanded: widget.isExpanded,
+                isDense: true,
+                underline: const SizedBox.shrink(),
+                icon: SizedBox.square(
+                  dimension: 15,
+                  child: SvgPicture.asset(
+                    AssetPaths.arrowDownIcon,
+                    colorFilter: ColorFilter.mode(
+                      context.watch<UIColors>().outline,
+                      BlendMode.srcIn
                     ),
                   ),
-                );
-              }
+                ),
+                items: List.generate(
+                  items.length,
+                  (index){
+                    return DropdownMenuItem(
+                      enabled: widget.label != null ? index != 0 : true,
+                      value: widget.label != null ? index - 1 : index,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                            items[index],
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: index == 0 && widget.label != null
+                              ? context.watch<UIColors>().outline.withOpacity(0.5)
+                              : context.watch<UIColors>().outline
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                ),
+                onChanged: (int? index){
+                  if(index is int && index != selectedIndex){
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                    widget.onItemSelected?.call(index);
+                  }
+                }
+              ),
             ),
-            onChanged: (int? index){
-              if(index is int){
-                setState(() {
-                  selectedIndex = index;
-                });
-                widget.onItemSelected?.call(index);
-              }
-            }
           ),
         ),
       ),

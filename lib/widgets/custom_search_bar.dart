@@ -9,12 +9,14 @@ class CustomSearchBar extends StatefulWidget {
   final FocusNode? focusNode;
   final VoidCallback? onTap;
   final VoidCallback? onEditingComplete;
+  final VoidCallback? onClear;
 
   const CustomSearchBar({
     this.controller,
     this.focusNode,
     this.onTap,
     this.onEditingComplete,
+    this.onClear,
     super.key
   });
 
@@ -97,6 +99,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                     setState(() {
                       widget.controller?.clear();
                     });
+                    widget.onClear?.call();
                   },
                   child: SvgPicture.asset(
                     AssetPaths.xIcon,

@@ -127,14 +127,14 @@ class _CartItemCardState extends State<CartItemCard> {
            ),
          );
        }
-       return const OrderItemLoading();
+       return const CartItemLoading();
       }
     );
   }
 }
 
-class OrderItemLoading extends StatelessWidget {
-  const OrderItemLoading({super.key});
+class CartItemLoading extends StatelessWidget {
+  const CartItemLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
