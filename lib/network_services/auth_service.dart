@@ -2,18 +2,21 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class AuthService extends ChangeNotifier{
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final database = FirebaseDatabase.instance;
 
   User? get user => FirebaseAuth.instance.currentUser;
+  Stream<User?> get userChanges => FirebaseAuth.instance.userChanges();
   bool get isSignedIn => user != null;
 
   Future<bool> signIn(String email, String password) async {
     try{
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       if(credential.user != null){
-        log('signed in');
+        log("signIn: signed in");
         return true;
       }
       else{
@@ -21,7 +24,7 @@ class AuthService extends ChangeNotifier{
       }
     }
     catch(e){
-      log(e.toString());
+      log("signIn: ${e.toString()}");
       return false;
     }
   }
@@ -30,7 +33,7 @@ class AuthService extends ChangeNotifier{
     try{
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       if(credential.user != null){
-        log('account created');
+        log('createAccount: account created');
         FirebaseAuth.instance.currentUser!.sendEmailVerification();
         return true;
       }
@@ -39,7 +42,7 @@ class AuthService extends ChangeNotifier{
       }
     }
     catch(e){
-      log(e.toString());
+      log("createAccount: ${e.toString()}");
       return false;
     }
   }
@@ -54,16 +57,16 @@ class AuthService extends ChangeNotifier{
       );
       final userCredential = await FirebaseAuth.instance.signInWithCredential(authCredential);
       if (userCredential.user != null){
-        log('signed in');
+        log('signInWithGoogle: signed in');
         return true;
       }
       else {
-        log('something went wrong');
+        log('signInWithGoogle: something went wrong');
         return false;
       }
     }
     catch (e){
-      log(e.toString());
+      log("signInWithGoogle: ${e.toString()}");
       return false;
     }
   }
@@ -71,10 +74,11 @@ class AuthService extends ChangeNotifier{
   Future<bool> signInSilently() async {
     try {
       final googleSignInAccount = await _googleSignIn.signInSilently();
+      log("signInSilently: ${googleSignInAccount != null ? "signed in with stealth :)" : "could not sign in"}");
       return googleSignInAccount != null;
     }
     catch (e){
-      log(e.toString());
+      log("signInSilently: ${e.toString()}");
       return false;
     }
   }
@@ -85,19 +89,46 @@ class AuthService extends ChangeNotifier{
       return true;
     }
     catch(e){
-      log(e.toString());
+      log("sendPasswordResetEmail: ${e.toString()}");
       return true;
+    }
+  }
+
+  void handlePresence(){
+    try {
+      database
+      .ref()
+      .child(".info/connected")
+      .onValue
+      .listen(
+        (e) async {
+          final connected = e.snapshot.value as bool? ?? false;
+          if (isSignedIn && connected) {
+            await database.ref("connection_status/${user!.uid}").update({
+              "state": "connected",
+              "last_changed": ServerValue.timestamp
+            });
+            await database.ref("connection_status/${user!.uid}").onDisconnect().update({
+              "state": "disconnected",
+              "last_changed": ServerValue.timestamp
+            });
+          }
+        }
+      );
+    }
+    catch(e){
+      log("handlePresence: ${e.toString()}");
     }
   }
 
   Future<bool> signOut() async {
     try{
       await FirebaseAuth.instance.signOut();
-      log('signed out');
+      log('signOut: signed out');
       return true;
     }
     catch(e){
-      log(e.toString());
+      log("signOut: ${e.toString()}");
       return false;
     }
   }

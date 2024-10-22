@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stitch/config/route_paths.dart';
 import 'package:stitch/models/constants.dart';
 import 'package:stitch/network_services/user_management_service.dart';
+import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/widgets/app_bar.dart';
+import 'package:stitch/widgets/bottom_sheet_selector.dart';
 import 'package:stitch/widgets/buttons.dart';
-import 'package:stitch/widgets/drop_down_menu.dart';
-import 'package:stitch/widgets/picker.dart';
+import 'package:stitch/widgets/horizontal_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stitch/utils/router_utils.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.watch<UIColors>().surface,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
         child: Column(
@@ -47,7 +49,7 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   0.05.sw.verticalSpace,
-                  Picker(
+                  HorizontalPicker(
                     items: Gender.values.map((g) => g.name).toList(),
                     startingIndex: selectedGender,
                     onItemPicked: (index){
@@ -60,12 +62,11 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   0.05.sw.verticalSpace,
-                  CustomDropDownMenu(
-                    isExpanded: true,
+                  BottomSheetSelector(
                     label: 'Age range',
                     items: AgeGroup.values.map((v) => v.name).toList(),
                     onItemSelected: (index){
-                      selectedAgeRange = index;
+                        selectedAgeRange = index;
                     },
                   )
                 ],
@@ -75,7 +76,8 @@ class _SetPreferencesScreenState extends State<SetPreferencesScreen> {
               padding: EdgeInsets.symmetric(vertical: 0.05.sw),
               child: CustomWideButton(
                 label: 'Finish',
-                onTap: isUploadingPreferences ? null : _uploadPreference
+                disabled: isUploadingPreferences,
+                onTap: _uploadPreference
               ),
             )
           ],

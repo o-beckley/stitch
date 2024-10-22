@@ -7,12 +7,14 @@ import 'package:stitch/theme/color_theme.dart';
 class CustomDropDownMenu extends StatefulWidget {
   final String? label;
   final List<String> items;
+  final int? initialIndex;
   final Function(int)? onItemSelected;
   final bool isExpanded;
 
   const CustomDropDownMenu({
     this.label,
     required this.items,
+    this.initialIndex,
     this.onItemSelected,
     this.isExpanded = false,
     super.key
@@ -25,16 +27,12 @@ class CustomDropDownMenu extends StatefulWidget {
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   late int selectedIndex;
   late List<String> items;
+
   @override
   void initState(){
     super.initState();
-    selectedIndex = widget.label != null ? -1 : 0;
-    if(widget.label != null){
-      items = [widget.label!, ...widget.items];
-    }
-    else{
-      items = widget.items;
-    }
+    selectedIndex = (widget.initialIndex) ?? (widget.label != null ? -1 : 0);
+    items = [if(widget.label != null) widget.label!, ...widget.items];
   }
 
   @override
@@ -44,44 +42,58 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
       child: Container(
         decoration: BoxDecoration(
           color: context.watch<UIColors>().surfaceContainer,
-          borderRadius: BorderRadius.circular(25)
+          borderRadius: BorderRadius.circular(20)
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: DropdownButton<int>(
-            value: selectedIndex,
-            isExpanded: widget.isExpanded,
-            isDense: true,
-            underline: const SizedBox.shrink(),
-            icon: SvgPicture.asset(AssetPaths.arrowDownIcon),
-            items: List.generate(
-              items.length,
-              (index){
-                return DropdownMenuItem(
-                  enabled: !(widget.label != null && index == 0),
-                  value: widget.label != null ? index - 1 : index,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(
-                        items[index],
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: !(widget.label != null && index == 0)
-                          ? context.watch<UIColors>().onSurface
-                          : context.watch<UIColors>().outline
-                      ),
+        child: SizedBox(
+          height: 40,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: DropdownButton<int>(
+                value: selectedIndex,
+                isExpanded: widget.isExpanded,
+                isDense: true,
+                underline: const SizedBox.shrink(),
+                icon: SizedBox.square(
+                  dimension: 15,
+                  child: SvgPicture.asset(
+                    AssetPaths.arrowDownIcon,
+                    colorFilter: ColorFilter.mode(
+                      context.watch<UIColors>().outline,
+                      BlendMode.srcIn
                     ),
                   ),
-                );
-              }
+                ),
+                items: List.generate(
+                  items.length,
+                  (index){
+                    return DropdownMenuItem(
+                      enabled: widget.label != null ? index != 0 : true,
+                      value: widget.label != null ? index - 1 : index,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                            items[index],
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: index == 0 && widget.label != null
+                              ? context.watch<UIColors>().outline.withOpacity(0.5)
+                              : context.watch<UIColors>().outline
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                ),
+                onChanged: (int? index){
+                  if(index is int && index != selectedIndex){
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                    widget.onItemSelected?.call(index);
+                  }
+                }
+              ),
             ),
-            onChanged: (int? index){
-              if(index is int){
-                setState(() {
-                  selectedIndex = index;
-                });
-                widget.onItemSelected?.call(index);
-              }
-            }
           ),
         ),
       ),

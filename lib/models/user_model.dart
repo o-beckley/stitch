@@ -1,3 +1,6 @@
+import 'package:stitch/models/address_model.dart';
+import 'package:stitch/models/notification_model.dart';
+import 'package:stitch/models/order_item_model.dart';
 import 'package:stitch/models/constants.dart';
 export 'package:stitch/models/constants.dart';
 
@@ -9,9 +12,11 @@ class StitchUser{
   final String? email;
   final Gender? gender;
   final AgeGroup? ageGroup;
-  final String? address;
+  final List<Address>? addresses;
   final List<String>? favourites;
-  final List<String>? cart;
+  final List<OrderItem>? cart;
+  final List<String>? orderIds;
+  final List<StitchNotification>? notifications;
 
   StitchUser({
     required this.id,
@@ -21,9 +26,11 @@ class StitchUser{
     this.email,
     this.gender,
     this.ageGroup,
-    this.address,
+    this.addresses,
     this.favourites,
     this.cart,
+    this.orderIds,
+    this.notifications,
   });
 
   static AgeGroup _getAgeGroup(name){
@@ -45,9 +52,11 @@ class StitchUser{
       email: data['email'],
       gender: data['gender'] == 'female' ? Gender.female : Gender.male,
       ageGroup: _getAgeGroup(data['ageGroup']),
-      address: data['address'],
-      favourites: data['favourites'],
-      cart: data['cart']
+      addresses: (data['addresses'] as List?)?.cast<Map<String, dynamic>>().map((e) => Address.fromMap(e)).toList(),
+      favourites: (data['favourites'] as List?)?.cast<String>(),
+      cart: (data['cart'] as List?)?.map((e) => OrderItem.fromMap(e)).toList(),
+      orderIds: (data['orderIds'] as List?)?.cast<String>(),
+      notifications: (data['notifications'] as List?)?.map((e) => StitchNotification.fromMap(e)).toList()
     );
   }
 
@@ -60,9 +69,11 @@ class StitchUser{
       'email': email,
       'gender': gender?.name,
       'ageGroup': ageGroup?.name,
-      'address': address,
+      'addresses': addresses?.map((e) => e.toMap()).toList(),
       'favourites': favourites,
-      'cart': cart,
+      'cart': cart?.map((e) => e.toMap()).toList(),
+      'orderIds': orderIds,
+      'notifications': notifications?.map((e) => e.toMap()),
     };
   }
 
@@ -74,9 +85,11 @@ class StitchUser{
     String? email,
     Gender? gender,
     AgeGroup? ageGroup,
-    String? address,
+    List<Address>? addresses,
     List<String>? favourites,
-    List<String>? cart,
+    List<OrderItem>? cart,
+    List<String>? orderIds,
+    List<StitchNotification>? notifications,
   }){
     return StitchUser(
       id: id ?? this.id,
@@ -86,9 +99,11 @@ class StitchUser{
       email: email ?? this.email,
       gender: gender ?? this.gender,
       ageGroup: ageGroup ?? this.ageGroup,
-      address: address ?? this.address,
+      addresses: addresses ?? this.addresses,
       favourites: favourites ?? this.favourites,
       cart: cart ?? this.cart,
+      orderIds: orderIds ?? this.orderIds,
+      notifications: notifications ?? this.notifications,
     );
   }
 }

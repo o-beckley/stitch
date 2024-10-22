@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 
@@ -6,33 +7,42 @@ class CustomWideButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final Widget? trailing;
+  final Color? color;
+  final Color? backgroundColor;
+  final bool disabled;
 
   const CustomWideButton({
     required this.label,
     this.onTap,
     this.trailing,
-    super.key
+    this.color,
+    this.backgroundColor,
+    this.disabled = false,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 50,
-        child: Opacity(
-          opacity: onTap == null ? 0.32 : 1,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: context.watch<UIColors>().primary
-            ),
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
+        borderRadius: BorderRadius.circular(30),
+        color: backgroundColor ?? context.watch<UIColors>().primary,
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: BorderRadius.circular(30),
+          child: SizedBox(
+            height: 60,
             child: trailing == null
             ? Center(
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: context.watch<UIColors>().onPrimaryContainer
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: color ?? context.watch<UIColors>().onPrimaryContainer,
+                  ),
                 ),
               ),
             )
@@ -41,16 +51,22 @@ class CustomWideButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: context.watch<UIColors>().onPrimaryContainer
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Text(
+                        label,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: color ?? context.watch<UIColors>().onPrimaryContainer,
+                        ),
+                      ),
                     ),
                   ),
                   trailing!
                 ],
               ),
-            )
+            ),
           ),
         ),
       ),
@@ -61,41 +77,47 @@ class CustomWideButton extends StatelessWidget {
 class CustomFilledButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
+  final bool disabled;
 
   const CustomFilledButton({
     required this.label,
     this.onTap,
+    this.disabled = false,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 50,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: context.watch<UIColors>().primary,
-                borderRadius: BorderRadius.circular(25)
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Text(
-                    label,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: context.watch<UIColors>().onPrimaryContainer
+    return Center(
+      child: Opacity(
+        opacity: disabled ? 0.32 : 1,
+        child: Material(
+          color: context.watch<UIColors>().primary,
+          borderRadius: BorderRadius.circular(25),
+          child: InkWell(
+            onTap: disabled ? null : onTap,
+            borderRadius: BorderRadius.circular(25),
+            child: SizedBox(
+              height: 50,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        label,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: context.watch<UIColors>().onPrimaryContainer
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -106,28 +128,79 @@ class CustomTextButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final Color? color;
+  final bool disabled;
 
   const CustomTextButton({
     required this.label,
     this.onTap,
     this.color,
+    this.disabled = false,
     super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 40,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: color ?? Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold
-              )
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: GestureDetector(
+        onTap: disabled ? null : onTap,
+        child: SizedBox(
+          height: 40,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: color ?? Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold
+                )
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomSvgIconButton extends StatelessWidget {
+  final String svgIconPath;
+  final VoidCallback? onTap;
+  final Color? backgroundColor;
+  final Color? iconColor;
+  final double radius;
+  final bool disabled;
+
+  const CustomSvgIconButton({
+    required this.svgIconPath,
+    this.onTap,
+    this.backgroundColor,
+    this.iconColor,
+    this.radius = 40,
+    this.disabled = false,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
+        color: backgroundColor ?? context.watch<UIColors>().surfaceContainer,
+        borderRadius: BorderRadius.circular(radius / 2),
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: BorderRadius.circular(radius / 2),
+          child: SizedBox.square(
+            dimension: radius,
+            child: Center(
+              child: SvgPicture.asset(
+                svgIconPath,
+                colorFilter: ColorFilter.mode(
+                  iconColor ?? context.watch<UIColors>().onSurface,
+                  BlendMode.srcIn
+                ),
+              ),
             ),
           ),
         ),

@@ -6,22 +6,26 @@ export 'package:stitch/models/constants.dart';
 class Product{
   final String id;
   final String name;
-  final int price;
+  final String sellerId;
+  final String description;
+  final double price;
   final List<String> imageUrls;
-  final Set<String> categories;
-  final Set<AgeGroup> ageGroups;
-  final Set<Gender> genders;
-  final Set<int> availableSizes;
-  final Set<ProductColor> availableColors;
+  final List<String> categoryIds;
+  final List<AgeGroup> ageGroups;
+  final List<Gender> genders;
+  final List<String> availableSizes;
+  final List<ProductColor> availableColors;
   final int amountLeft;
   final List<ProductReview> reviews;
 
   Product({
     required this.id,
     required this.name,
+    required this.sellerId,
+    required this.description,
     required this.price,
     required this.imageUrls,
-    required this.categories,
+    required this.categoryIds,
     required this.ageGroups,
     required this.genders,
     required this.availableSizes,
@@ -51,15 +55,17 @@ class Product{
     return Product(
       id: data['id'],
       name: data['name'],
+      sellerId: data['sellerId'],
+      description: data['description'],
       price: data['price'],
-      imageUrls: data['imageUrls'] as List<String>,
-      categories: data['categories'] as Set<String>,
-      ageGroups: (data['ageGroups'] as Set<String>).map(_getAgeGroup).toSet(),
-      genders: (data['genders'] as Set<String>).map(_getGender).toSet(),
-      availableSizes: data['availableSizes'] as Set<int>,
-      availableColors: (data['availableColors'] as Set<Map<String, dynamic>>).map(ProductColor.fromMap).toSet(),
+      imageUrls: (data['imageUrls'] as List).cast<String>(),
+      categoryIds: (data['categoryIds'] as List).cast<String>(),
+      ageGroups: (data['ageGroups'] as List).cast<String>().map(_getAgeGroup).toList(),
+      genders: (data['genders'] as List).cast<String>().map(_getGender).toList(),
+      availableSizes: (data['availableSizes'] as List).cast<String>(),
+      availableColors: (data['availableColors'] as List).cast<Map<String, dynamic>>().map(ProductColor.fromMap).toList(),
       amountLeft: data['amountLeft'],
-      reviews: (data['reviews'] as List<Map<String, dynamic>>).map(ProductReview.fromMap).toList(),
+      reviews: (data['reviews'] as List).cast<Map<String, dynamic>>().map(ProductReview.fromMap).toList(),
     );
   }
 
@@ -67,9 +73,11 @@ class Product{
     return {
       'id': id,
       'name': name,
+      'sellerId': sellerId,
+      'description': description,
       'price': price,
       'imageUrls': imageUrls,
-      'categories': categories,
+      'categoryIds': categoryIds,
       'ageGroups': ageGroups.map((g) => g.name).toSet(),
       'genders': genders.map((g) => g.name).toSet(),
       'availableSizes': availableSizes,

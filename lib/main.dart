@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:stitch/config/router_config.dart';
 import 'package:stitch/firebase_options.dart';
 import 'package:stitch/network_services/auth_service.dart';
+import 'package:stitch/network_services/product_provider_service.dart';
 import 'package:stitch/network_services/user_management_service.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:stitch/theme/theme.dart';
@@ -28,7 +29,8 @@ class StitchApp extends StatelessWidget {
       providers: [
         ListenableProvider<UIColors>(create: (context) => UIColors()),
         ListenableProvider<AuthService>(create: (context) => AuthService()),
-        ListenableProvider<UserManagementService>(create: (context) => UserManagementService())
+        ListenableProvider<UserManagementService>(create: (context) => UserManagementService()),
+        ListenableProvider<ProductProviderService>(create: (context) => ProductProviderService()),
       ],
       child: const Stitch(),
     );

@@ -20,44 +20,43 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: disabled ? null : onTap,
-      child: SizedBox(
-        height: 50,
-        child: Opacity(
-          opacity: disabled ? 0.32 : 1,
-          child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: context.watch<UIColors>().surfaceContainer
+    return Opacity(
+      opacity: disabled ? 0.32 : 1,
+      child: Material(
+        borderRadius: BorderRadius.circular(25),
+        color: context.watch<UIColors>().surfaceContainer,
+        child: InkWell(
+          onTap: disabled ? null : onTap,
+          borderRadius: BorderRadius.circular(25),
+          child: SizedBox(
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12.5,
+                  vertical: 10
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12.5,
-                    vertical: 10
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox.square(
-                        dimension: 40,
-                        child: SvgPicture.asset(iconPath)
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        child: Center(
-                          child: Text(
-                            label,
-                            style: Theme.of(context).textTheme.labelLarge,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox.square(
+                      dimension: 40,
+                      child: SvgPicture.asset(iconPath)
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: Center(
+                        child: Text(
+                          label,
+                          style: Theme.of(context).textTheme.labelLarge,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                    40.horizontalSpace // this is to match the width of the icon so that the label is centralized
-                  ],
-                ),
-              )
+                  ),
+                  40.horizontalSpace // this is to match the width of the icon so that the label is centralized
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -5,23 +5,25 @@ import 'package:provider/provider.dart';
 import 'package:stitch/theme/color_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Picker extends StatefulWidget {
+class HorizontalPicker extends StatefulWidget {
   final List<String> items;
   final Function(int)? onItemPicked;
   final int startingIndex;
+  final double endPadding;
 
-  const Picker({
+  const HorizontalPicker({
     required this.items,
     this.onItemPicked,
     this.startingIndex = 0,
+    this.endPadding = 0,
     super.key
   });
 
   @override
-  State<Picker> createState() => _PickerState();
+  State<HorizontalPicker> createState() => _HorizontalPickerState();
 }
 
-class _PickerState extends State<Picker> {
+class _HorizontalPickerState extends State<HorizontalPicker> {
   late int selectedIndex;
 
   @override
@@ -43,8 +45,8 @@ class _PickerState extends State<Picker> {
             (index){
               return  Padding(
                 padding: EdgeInsets.only(
-                  left: index == 0 ? 0 : radius / 2,
-                  right: index == widget.items.length ? radius / 2 : 0
+                  left: index == 0 ? widget.endPadding : radius / 2,
+                  right: index + 1 == widget.items.length ? widget.endPadding : 0
                 ),
                 child: GestureDetector(
                   onTap: (){
@@ -93,7 +95,7 @@ class _PickerState extends State<Picker> {
                 ),
               );
             }
-          )
+          ),
         ),
       ),
     );

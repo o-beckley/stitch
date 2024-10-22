@@ -6,6 +6,7 @@ class AssetPaths {
   static const String appleLightIcon = 'assets/icons/apple_light.svg';
   static const String arrowBackIcon = 'assets/icons/arrow_back.svg';
   static const String arrowDownIcon = 'assets/icons/arrow_down.svg';
+  static const String arrowForwardIcon = 'assets/icons/arrow_forward.svg';
   static const String bagIcon = 'assets/icons/bag.svg';
   static const String checkIcon = 'assets/icons/check.svg';
   static const String discountIcon = 'assets/icons/discount.svg';
@@ -23,6 +24,7 @@ class AssetPaths {
   static const String removeIcon = 'assets/icons/remove.svg';
   static const String searchIcon = 'assets/icons/search.svg';
   static const String starIcon = 'assets/icons/star.svg';
+  static const String xIcon = 'assets/icons/x.svg';
 
   // png images
   static const String bellImage = 'assets/images/bell.png';
